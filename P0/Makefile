@@ -19,6 +19,5 @@ LIBS = -lglut -lGLU  -lGL -lX11 -lXext  -lc -lm
 CC = g++
 
 # Executable.
-$(EXE): $(MODULOS)	
-	$(CC) -o $(EXE) $(LDFLAGS) $(MODULES) $(LIBS)   
-
+$(EXE): $(MODULES)	
+	$(CC) -o $(EXE) $(LDFLAGS) $(MODULES) $(LIBS)
