@@ -1,20 +1,24 @@
 
-EJECUTABLE= practica_0
-MODULOS=  $(EJECUTABLE).o
+.SUFFIXES:			# Clears out the suffix list.
+.SUFFIXES: .cpp .o	# Introduces all the suffixes used.
 
-#  CFLAGS= Parametros para el compilador de C/C++       
-CFLAGS=  -g -c -DXWINDOWS -I/usr/include -I     
+SHELL = /bin/bash
+EXE = practica0
+MODULES = $(EXE).o
 
-#  LDFLAGS= Parametros para el linkador
-LDFLAGS=   -L/usr/lib  
+# CFLAGS - C/C++ compiler parameters.       
+CFLAGS = -g -c -DXWINDOWS -I/usr/include -I     
 
-#  LIBS= librerias a usar.
-LIBS=    -lglut -lGLU  -lGL -lX11 -lXext  -lc -lm
+# LDFLAGS - Linker parameters.
+LDFLAGS = -L/usr/lib  
 
-#  CC= orden de UNIX que invoca al compilador de C/C++ de GNU
-CC=        g++
+# LIBS - Libraries to use.
+LIBS = -lglut -lGLU  -lGL -lX11 -lXext  -lc -lm
 
-# archivo ejecutable a generar
-$(EJECUTABLE): $(MODULOS)	
-	$(CC)  -o$(EJECUTABLE) $(LDFLAGS) $(MODULOS)  $(LIBS)   
+# CC - UNIX command to call C/C++ GNU compilator.
+CC = g++
+
+# Executable.
+$(EXE): $(MODULOS)	
+	$(CC) -o $(EXE) $(LDFLAGS) $(MODULES) $(LIBS)   
 
