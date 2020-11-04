@@ -1,21 +1,20 @@
-# fichero Makefile
-#
-# nombre del fichero ejecutable
-#
-TARGETS= practica1
+.SUFFIXES:		# Clears out the suffix list.
+.SUFFIXES: .cpp .o	# Introduces all the suffixes used.
+
+TARGETS = practica1
 
 # banderas para el compilador (C y C++). Se indican los directorios donde se puenden
 # encontrar ficheros para incluir mediante la opcion -I
-# la opcion -g sirve para permitir la depuración
+# la opcion -g sirve para permitir la depuraciï¿½n
 #
-CFLAGS=    -g -DXWINDOWS -DSHM -I/usr/include -I.
-CXXFLAGS=  -g -DXWINDOWS -DSHM -I/usr/include -I.
+CFLAGS =	-g -DXWINDOWS -DSHM -I/usr/include -I.
+CXXFLAGS =	-g -DXWINDOWS -DSHM -I/usr/include -I.
 
 # banderas pra el enlazador
 # Se indica directorios donde encontrar las funciontecas con -L. Usando -l seguido del
 # nombre se indica la funcionteca que se desea enlazar.
 #
-LDFLAGS=  -lGL -lGLU -lglut -lm
+LDFLAGS = -lGL -lGLU -lglut -lm
 
 # definicion del compilador
 #
