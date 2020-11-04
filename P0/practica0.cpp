@@ -129,7 +129,6 @@ void Monigote()
       glVertex3f(0.2, 0.60, 0.0);
       glVertex3f(0.2, 0.80, 0.0);
    glEnd();
-
 }
 
 static void Init()
