@@ -1,4 +1,3 @@
-
 .SUFFIXES:		# Clears out the suffix list.
 .SUFFIXES: .cpp .o	# Introduces all the suffixes used.
 

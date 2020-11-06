@@ -166,7 +166,7 @@ int main( int argc, char **argv)
 
    glutInitWindowPosition(20, 100);
    glutInitWindowSize(500, 500);
-   glutCreateWindow("Practica 0 IG");
+   glutCreateWindow("P0 IG");
 
    Init();
 
