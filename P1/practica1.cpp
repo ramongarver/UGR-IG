@@ -277,7 +277,7 @@ int main(int argc, char **argv)
 
     // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
     // al bucle de eventos)
-    glutCreateWindow("Práctica 1");
+    glutCreateWindow("P1 IG");
 
     // asignación de la funcion llamada "dibujar" al evento de dibujo
     glutDisplayFunc(draw_scene);

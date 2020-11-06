@@ -22,17 +22,14 @@ CC = g++
 all: $(EXE)
 
 # Executable.
-$(EXE): objetos.o practica1.o
+$(EXE): $(OBJ)
 	$(CC) -o $(EXE) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LIBS)
 
 # Clean OBJ and EXECUTABLE.
 clean:
-	rm -f *.o
-	rm -f $(EXE)
+	rm -f *.o $(EXE)
 
 # Compress files.
 tgz:
-	rm -f *.o
-	rm *~
-	rm -f $(EXE)
+	rm -f *.o *~ $(EXE)
 	tar -zcvf $(EXE).tgz *
