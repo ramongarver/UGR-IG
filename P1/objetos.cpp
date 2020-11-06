@@ -1,56 +1,43 @@
-//**************************************************************************
-// Práctica 1 usando objetos
-//**************************************************************************
-
 #include "objetos.h"
 
 
-//*************************************************************************
-// _puntos3D
-//*************************************************************************
-
-_puntos3D::_puntos3D()
-{
-}
+//*************
+// _puntos3D //
+//*************
+_puntos3D::_puntos3D() {}
 
 
-//*************************************************************************
-// dibujar puntos
-//*************************************************************************
-
+//*******************
+// Dibujar puntos. //
+//*******************
 void _puntos3D::draw_puntos(float r, float g, float b, int grosor)
 {
-	int i;
 	glPointSize(grosor);
 	glColor3f(r,g,b);
 	glBegin(GL_POINTS);
-	for (i = 0;i < vertices.size(); i++)
+	for (int i = 0;i < vertices.size(); i++)
 		glVertex3fv((GLfloat *) &vertices[i]);
 	glEnd();
 }
 
 
-//*************************************************************************
-// _triangulos3D
-//*************************************************************************
-
-_triangulos3D::_triangulos3D()
-{
-}
+//*****************
+// _triangulos3D //
+//*****************
+_triangulos3D::_triangulos3D() {}
 
 
-//*************************************************************************
-// dibujar en modo arista
-//*************************************************************************
-
+//***************************
+// Dibujar en modo arista. //
+//***************************
 void _triangulos3D::draw_aristas(float r, float g, float b, int grosor)
 {
-	int i;
 	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	glLineWidth(grosor);
 	glColor3f(r,g,b);
 	glBegin(GL_TRIANGLES);
-	for (i = 0; i < caras.size(); i++) {
+	for (int i = 0; i < caras.size(); i++)
+	{
 		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
@@ -59,17 +46,16 @@ void _triangulos3D::draw_aristas(float r, float g, float b, int grosor)
 }
 
 
-//*************************************************************************
-// dibujar en modo sólido
-//*************************************************************************
-
+//**************************
+// Dibujar en modo sólido //
+//**************************
 void _triangulos3D::draw_solido(float r, float g, float b)
 {
-	int i;
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 	glColor3f(r,g,b);
 	glBegin(GL_TRIANGLES);
-	for (i = 0; i < caras.size(); i++) {
+	for (int i = 0; i < caras.size(); i++) 
+	{
 		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
@@ -78,18 +64,17 @@ void _triangulos3D::draw_solido(float r, float g, float b)
 }
 
 
-//*************************************************************************
-// dibujar en modo sólido con apariencia de ajedrez
-//*************************************************************************
-
+//****************************************************
+// Dibujar en modo sólido con apariencia de ajedrez //
+//****************************************************
 void _triangulos3D::draw_solido_ajedrez(float r1, float g1, float b1, float r2, float g2, float b2)
 {
-	int i;
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 	glBegin(GL_TRIANGLES);
-	for (i = 0; i < caras.size(); i++) {
-		if (i%2==0) glColor3f(r1,g1,b1);
-		else		glColor3f(r2,g2,b2);
+	for (int i = 0; i < caras.size(); i++) 
+	{
+		if (i % 2 == 0) glColor3f(r1,g1,b1);
+		else			glColor3f(r2,g2,b2);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
 		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
@@ -98,10 +83,9 @@ void _triangulos3D::draw_solido_ajedrez(float r1, float g1, float b1, float r2, 
 }
 
 
-//*************************************************************************
-// clase cubo
-//*************************************************************************
-
+//*********
+// _cubo //
+//*********
 _cubo::_cubo(float tam)
 {
 	// Vértices
@@ -115,7 +99,7 @@ _cubo::_cubo(float tam)
 	vertices[6].x = tam/2;	vertices[6].y = tam/2;	vertices[6].z = -tam/2;
 	vertices[7].x = -tam/2;	vertices[7].y = tam/2;	vertices[7].z = -tam/2;
 
-	// Triángulos
+	// Caras
 	caras.resize(12);
 	caras[0]._0 = 0;	caras[0]._1 = 1;	caras[0]._2 = 4;
 	caras[1]._0 = 1;	caras[1]._1 = 5;	caras[1]._2 = 4;
@@ -132,10 +116,9 @@ _cubo::_cubo(float tam)
 }
 
 
-//*************************************************************************
-// clase piramide
-//*************************************************************************
-
+//*************
+// _piramide //
+//*************
 _piramide::_piramide(float tam, float al)
 {
 	// Vértices 
