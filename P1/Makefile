@@ -1,58 +1,38 @@
 .SUFFIXES:		# Clears out the suffix list.
 .SUFFIXES: .cpp .o	# Introduces all the suffixes used.
 
-TARGETS = practica1
+SHELL = /bin/bash
+EXE = practica1
+SRC = practica1.cpp objetos.cpp
+OBJ = $(SRC:.cpp=.o)
 
-# banderas para el compilador (C y C++). Se indican los directorios donde se puenden
-# encontrar ficheros para incluir mediante la opcion -I
-# la opcion -g sirve para permitir la depuraci�n
-#
-CFLAGS =	-g -DXWINDOWS -DSHM -I/usr/include -I.
-CXXFLAGS =	-g -DXWINDOWS -DSHM -I/usr/include -I.
+# CFLAGS - C/C++ compiler parameters.       
+CFLAGS = -g -DXWINDOWS -DSHM -I/usr/include -I.
 
-# banderas pra el enlazador
-# Se indica directorios donde encontrar las funciontecas con -L. Usando -l seguido del
-# nombre se indica la funcionteca que se desea enlazar.
-#
-LDFLAGS = -lGL -lGLU -lglut -lm
+# LDFLAGS - Linker parameters.
+LDFLAGS = -L/usr/lib  
 
-# definicion del compilador
-#
+# LIBS - Libraries to use.
+LIBS = -lGL -lGLU -lglut -lm
+
+# CC - UNIX command to call C/C++ GNU compilator.
 CC = g++
 
-# orden que sera ejecutada por defecto
-#
-default : $(TARGETS)
+# All.
+all: $(EXE)
 
-# regla de ejecucion
-#
-$(TARGETS) : objetos.o practica1.o
-	$(CC) -o $@ $(CXXFLAGS) objetos.o practica1.o $(LDFLAGS)
+# Executable.
+$(EXE): objetos.o practica1.o
+	$(CC) -o $(EXE) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LIBS)
 
-#
-#
+# Clean OBJ and EXECUTABLE.
 clean:
 	rm -f *.o
-	rm -f $(TARGETS)
+	rm -f $(EXE)
 
-#
-#
-redo:
-	touch *.cc
-	make
-
-#
-#
-superclean:
-	rm -f *.o
-	rm *~
-	rm -f $(TARGETS)
-
-#
-#
+# Compress files.
 tgz:
 	rm -f *.o
 	rm *~
-	rm -f $(TARGETS)
-	tar -zcvf $(TARGETS).tgz *
-
+	rm -f $(EXE)
+	tar -zcvf $(EXE).tgz *
