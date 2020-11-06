@@ -22,7 +22,8 @@ void Ejes(int width)
    glEnd();       
 }
 
-void Circle (GLfloat radius, GLfloat cx, GLfloat cy, GLint n, GLenum mode) {
+void Circle (GLfloat radius, GLfloat cx, GLfloat cy, GLint n, GLenum mode)
+{
    if       (mode == GL_POINT) glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
    else if  (mode == GL_LINE)  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
    else if  (mode == GL_FILL)  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
