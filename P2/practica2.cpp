@@ -80,23 +80,22 @@ glRotatef(Observer_angle_y,0,1,0);
 
 void draw_axis()
 {
-	
-glDisable(GL_LIGHTING);
-glLineWidth(2);
-glBegin(GL_LINES);
-// eje X, color rojo
-glColor3f(1,0,0);
-glVertex3f(-AXIS_SIZE,0,0);
-glVertex3f(AXIS_SIZE,0,0);
-// eje Y, color verde
-glColor3f(0,1,0);
-glVertex3f(0,-AXIS_SIZE,0);
-glVertex3f(0,AXIS_SIZE,0);
-// eje Z, color azul
-glColor3f(0,0,1);
-glVertex3f(0,0,-AXIS_SIZE);
-glVertex3f(0,0,AXIS_SIZE);
-glEnd();
+	glDisable(GL_LIGHTING);
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	// eje X, color rojo
+	glColor3f(1,0,0);
+	glVertex3f(-AXIS_SIZE,0,0);
+	glVertex3f(AXIS_SIZE,0,0);
+	// eje Y, color verde
+	glColor3f(0,1,0);
+	glVertex3f(0,-AXIS_SIZE,0);
+	glVertex3f(0,AXIS_SIZE,0);
+	// eje Z, color azul
+	glColor3f(0,0,1);
+	glVertex3f(0,0,-AXIS_SIZE);
+	glVertex3f(0,0,AXIS_SIZE);
+	glEnd();
 }
 
 
@@ -242,7 +241,7 @@ glViewport(0,0,Window_width,Window_high);
 //***************************************************************************
 
 
-int main(int argc, char *argv[] ) {
+int main(int argc, char *argv[]) {
 	// perfil 
 	vector<_vertex3f> perfil2;
 	_vertex3f aux;
@@ -251,7 +250,6 @@ int main(int argc, char *argv[] ) {
 	perfil2.push_back(aux);
 	aux.x=1.0; aux.y=1.0; aux.z=0.0;
 	perfil2.push_back(aux);
-
 
 	rotacion.parametros(perfil2,6);
 

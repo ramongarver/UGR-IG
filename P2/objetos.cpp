@@ -214,30 +214,80 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num)
 
   // Tratamiento de los vértices
   num_aux = perfil.size();
-  vertices.resize(num_aux * num);
+  vertices.resize(num_aux*num+2);
   for (int j = 0; j < num; j++)
   {
     for (int i = 0; i < num_aux; i++)
     {
       vertice_aux.x =  perfil[i].x*cos(2.0*M_PI*j/(1.0*num)) + perfil[i].z*sin(2.0*M_PI*j/(1.0*num));
       vertice_aux.z = -perfil[i].x*sin(2.0*M_PI*j/(1.0*num)) + perfil[i].z*cos(2.0*M_PI*j/(1.0*num));
-      vertice_aux.y=perfil[i].y;
+      vertice_aux.y =  perfil[i].y;
       vertices[i+j*num_aux] = vertice_aux;
     }
   }
 
   // Tratamiento de las caras
+  caras.resize(2*(num_aux-1)*num + 2*num);
+
+  int c = 0;
+  for (int j = 0; j < num-1; j++)
+  {
+    caras[c]._0 = 2*j;
+    caras[c]._1 = 2*j+1;
+    caras[c]._2 = 2*(j+1)+1;
+    c++;
+    caras[c]._0 = 2*(j+1)+1;
+    caras[c]._1 = 2*(j+1);
+    caras[c]._2 = 2*j;
+    c++;
+  }
+  caras[c]._0 = 0;
+  caras[c]._1 = 1;
+  caras[c]._2 = 2*(num-1);
+  c++;
+  caras[c]._0 = 2*(num-1)+1;
+  caras[c]._1 = 2*(num-1);
+  caras[c]._2 = 1;
+  c++;
 
       
   // Tapa inferior
-  if (fabs(perfil[0].x)>0.0) 
+  if (fabs(perfil[0].x) > 0.0) 
   {
+    vertices[num_aux*num]._0 = 0.0;
+    vertices[num_aux*num]._1 = perfil[0].y;
+    vertices[num_aux*num]._2 = 0.0;
 
+    for (int j = 0; j < num-1; j++) 
+    {
+      caras[c]._0 = num_aux*num;
+      caras[c]._1 = 2*j;
+      caras[c]._2 = 2*(j+1);
+      c++;
+    }
+    caras[c]._0 = num_aux*num;
+    caras[c]._1 = 0;
+    caras[c]._2 = 2*(num-1);
+    c++;
   }
 
   // Tapa superior
-  if (fabs(perfil[num_aux-1].x)>0.0) 
+  if (fabs(perfil[num_aux-1].x) > 0.0) 
   {
+    vertices[num_aux*num+1]._0 = 0.0;
+    vertices[num_aux*num+1]._1 = perfil[num_aux-1].y;
+    vertices[num_aux*num+1]._2 = 0.0;
 
+    for (int j = 0; j < num-1; j++) 
+    {
+      caras[c]._0 = num_aux*num+1;
+      caras[c]._1 = 2*j+1;
+      caras[c]._2 = 2*(j+1)+1;
+      c++;
+    }
+    caras[c]._0 = num_aux*num+1;
+    caras[c]._1 = 1;
+    caras[c]._2 = 2*(num-1)+1;
+    c++;
   }
 }
