@@ -57,7 +57,7 @@ class _piramide: public _triangulos3D
 //***************
 // _objeto_ply //
 //***************
-class _objeto_ply: public _triangulos3D
+class _objeto_ply: virtual public _triangulos3D
 {
 	public:
 		_objeto_ply();
@@ -65,6 +65,77 @@ class _objeto_ply: public _triangulos3D
 };
 
 
+//*************
+// _rotacion //
+//*************
+class _rotacion: virtual public _triangulos3D
+{ 
+	int num;
+	vector<_vertex3f> perfil;
+	public:
+		_rotacion();
+		void parametros(vector<_vertex3f> perfil, int num);
+};
+
+
+//*************
+// _cono //
+//*************
+class _cono: public _rotacion
+{ 
+	public:
+		_cono(float radio, float altura, int num);
+};
+
+
+//*************
+// _cilindro //
+//*************
+class _cilindro: public _rotacion
+{ 
+	public:
+		_cilindro(float );
+};
+
+
+//*************
+// _esfera //
+//*************
+class _esfera: public _rotacion
+{ 
+	public:
+		_esfera(float radio, int n, int num);
+};
+
+//****************
+// _rotacionply //
+//****************
+class _rotacionply: public _rotacion, public _objeto_ply
+{ 
+	public:
+		_rotacionply();
+		void parametros(char *archivo, int num);
+};
+
+/*_esfera::_esfera(float radio, int n, int num)
+{
+	vector<_vertex3f> perfil;
+	_vertex3f aux;
+
+	for (int i = 0; i < n; i++) 
+	{
+		aux._0 =
+		aux._1 =
+		aux._2 = 
+	}
+
+
+}*/
+
+
+
+
+/*
 //*************
 // _rotacion //
 //*************
@@ -76,3 +147,4 @@ class _rotacion: public _triangulos3D
 		_rotacion();
 		void parametros(vector<_vertex3f> perfil, int num);
 };
+*/

@@ -8,7 +8,7 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY} _tipo_objeto;
 _tipo_objeto t_objeto=CUBO;
 _modo   modo=POINTS;
 
@@ -26,9 +26,10 @@ int Window_x=50,Window_y=50,Window_width=450,Window_high=450;
 
 // objetos
 _cubo cubo;
-_piramide piramide(0.85,1.3);
+_piramide piramide;
 _objeto_ply  ply; 
-_rotacion rotacion; 
+_rotacion rotacion;
+_rotacionply rotply;
 
 // _objeto_ply *ply1;
 
@@ -111,6 +112,7 @@ void draw_objects()
 		case PIRAMIDE: 		piramide.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);	break;
 		case OBJETO_PLY: 	ply.draw(modo,1.0,0.6,0.0,0.0,1.0,0.3,2);		break;
 		case ROTACION: 		rotacion.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);	break;
+		case ROTACION_PLY: 	rotply.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);	break;
 	}
 }
 
@@ -172,6 +174,7 @@ switch (toupper(Tecla1)){
         case 'C':t_objeto=CUBO;break;
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
+		case 'T':t_objeto=ROTACION_PLY;break;
 	}
 glutPostRedisplay();
 }
@@ -245,11 +248,17 @@ int main(int argc, char *argv[]) {
 	// perfil 
 	vector<_vertex3f> perfil2;
 	_vertex3f aux;
+	
 
-	aux.x=1.0; aux.y=-1.0; aux.z=0.0;
+	aux.x=0.5; aux.y=1.0; aux.z=0.0;
 	perfil2.push_back(aux);
-	aux.x=1.0; aux.y=1.0; aux.z=0.0;
+
+	aux.x=1.0; aux.y=0.0; aux.z=0.0;
 	perfil2.push_back(aux);
+	
+	aux.x=0.5; aux.y=-1.0; aux.z=0.0;
+	perfil2.push_back(aux);
+
 
 	rotacion.parametros(perfil2,6);
 
@@ -293,6 +302,8 @@ int main(int argc, char *argv[]) {
 
 	// creación del objeto ply
 	ply.parametros(argv[1]);
+
+	rotply.parametros(argv[1], 6);
 
 	//ply1 = new _objeto_ply(argv[1]);
 

@@ -138,20 +138,20 @@ _piramide::_piramide(float tam, float al)
 {
 	// Vértices 
 	vertices.resize(5); 
-	vertices[0].x=-tam;	vertices[0].y=0;	vertices[0].z=tam;
-	vertices[1].x=tam;	vertices[1].y=0;	vertices[1].z=tam;
-	vertices[2].x=tam;	vertices[2].y=0;	vertices[2].z=-tam;
-	vertices[3].x=-tam;	vertices[3].y=0;	vertices[3].z=-tam;
-	vertices[4].x=0;	  vertices[4].y=al;	vertices[4].z=0;
+	vertices[0].x = -tam/2;	vertices[0].y = -al/2;	vertices[0].z = tam/2;
+	vertices[1].x = tam/2;	vertices[1].y = -al/2;	vertices[1].z = tam/2;
+	vertices[2].x = tam/2;	vertices[2].y = -al/2;	vertices[2].z = -tam/2;
+	vertices[3].x = -tam/2;	vertices[3].y = -al/2;	vertices[3].z = -tam/2;
+	vertices[4].x = 0;	    vertices[4].y = al/2;	  vertices[4].z = 0;
 	
 	// Caras
 	caras.resize(6);
-	caras[0]._0=0;	caras[0]._1=1;	caras[0]._2=4;
-	caras[1]._0=1;	caras[1]._1=2;	caras[1]._2=4;
-	caras[2]._0=2;	caras[2]._1=3;	caras[2]._2=4;
-	caras[3]._0=3;	caras[3]._1=0;	caras[3]._2=4;
-	caras[4]._0=3;	caras[4]._1=1;	caras[4]._2=0;
-	caras[5]._0=3;	caras[5]._1=2;	caras[5]._2=1;
+	caras[0]._0 = 0;	caras[0]._1 = 1;	caras[0]._2 = 4;
+	caras[1]._0 = 1;	caras[1]._1 = 2;	caras[1]._2 = 4;
+	caras[2]._0 = 2;	caras[2]._1 = 3;	caras[2]._2 = 4;
+	caras[3]._0 = 3;	caras[3]._1 = 0;	caras[3]._2 = 4;
+	caras[4]._0 = 3;	caras[4]._1 = 1;	caras[4]._2 = 0;
+	caras[5]._0 = 3;	caras[5]._1 = 2;	caras[5]._2 = 1;
 }
 
 //***************
@@ -206,6 +206,19 @@ int _objeto_ply::parametros(char *archivo)
 _rotacion::_rotacion() {}
 
 
+//****************
+// _rotacionply //
+//****************
+_rotacionply::_rotacionply() {}
+
+void _rotacionply::parametros(char *archivo, int num) {
+  _objeto_ply obj;
+  obj.parametros(archivo);
+  _rotacion::parametros(obj.vertices, num);
+}
+
+
+
 void _rotacion::parametros(vector<_vertex3f> perfil, int num)
 {
   _vertex3f vertice_aux;
@@ -230,26 +243,19 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num)
   caras.resize(2*(num_aux-1)*num + 2*num);
 
   int c = 0;
-  for (int j = 0; j < num-1; j++)
+  for (int j = 0; j < num; j++)
   {
-    caras[c]._0 = 2*j;
-    caras[c]._1 = 2*j+1;
-    caras[c]._2 = 2*(j+1)+1;
-    c++;
-    caras[c]._0 = 2*(j+1)+1;
-    caras[c]._1 = 2*(j+1);
-    caras[c]._2 = 2*j;
-    c++;
+      for (int i = 0; i < num_aux-1; i++) {
+      caras[c]._0 = num_aux*j+i;
+      caras[c]._1 = num_aux*j+1+i;
+      caras[c]._2 = num_aux*((j+1)%num)+1+i;
+      c++;
+      caras[c]._0 = num_aux*((j+1)%num)+1+i;
+      caras[c]._1 = num_aux*((j+1)%num)+i;
+      caras[c]._2 = num_aux*j+i;
+      c++;
+    }
   }
-  caras[c]._0 = 0;
-  caras[c]._1 = 1;
-  caras[c]._2 = 2*(num-1);
-  c++;
-  caras[c]._0 = 2*(num-1)+1;
-  caras[c]._1 = 2*(num-1);
-  caras[c]._2 = 1;
-  c++;
-
       
   // Tapa inferior
   if (fabs(perfil[0].x) > 0.0) 
@@ -258,17 +264,13 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num)
     vertices[num_aux*num]._1 = perfil[0].y;
     vertices[num_aux*num]._2 = 0.0;
 
-    for (int j = 0; j < num-1; j++) 
+    for (int j = 0; j < num; j++) 
     {
       caras[c]._0 = num_aux*num;
-      caras[c]._1 = 2*j;
-      caras[c]._2 = 2*(j+1);
+      caras[c]._1 = num_aux*j;
+      caras[c]._2 = num_aux*((j+1)%num);
       c++;
     }
-    caras[c]._0 = num_aux*num;
-    caras[c]._1 = 0;
-    caras[c]._2 = 2*(num-1);
-    c++;
   }
 
   // Tapa superior
@@ -278,16 +280,12 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num)
     vertices[num_aux*num+1]._1 = perfil[num_aux-1].y;
     vertices[num_aux*num+1]._2 = 0.0;
 
-    for (int j = 0; j < num-1; j++) 
+    for (int j = 0; j < num; j++) 
     {
       caras[c]._0 = num_aux*num+1;
-      caras[c]._1 = 2*j+1;
-      caras[c]._2 = 2*(j+1)+1;
+      caras[c]._1 = num_aux*j+num_aux-1;
+      caras[c]._2 = num_aux*((j+1)%num)+num_aux-1;
       c++;
     }
-    caras[c]._0 = num_aux*num+1;
-    caras[c]._1 = 1;
-    caras[c]._2 = 2*(num-1)+1;
-    c++;
   }
 }
