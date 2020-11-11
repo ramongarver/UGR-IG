@@ -157,11 +157,7 @@ _piramide::_piramide(float tam, float al)
 //***************
 // _objeto_ply //
 //***************
-_objeto_ply::_objeto_ply() 
-{
-  // leer lista de coordenadas de vértices y lista de indices de vértices
- 
-}
+_objeto_ply::_objeto_ply() {}
 
 
 int _objeto_ply::parametros(char *archivo)
@@ -206,28 +202,88 @@ int _objeto_ply::parametros(char *archivo)
 _rotacion::_rotacion() {}
 
 
+//*************
+// _cono //
+//*************
+_cono::_cono(float radio, float altura, int num)
+{
+  vector<_vertex3f> perfil;
+	_vertex3f vertice_aux;
+  vertice_aux.x = radio; vertice_aux.y = -altura/2.0; vertice_aux.z = 0.0;
+	perfil.push_back(vertice_aux);
+  vertice_aux.x = 0.0; vertice_aux.y = altura/2.0; vertice_aux.z = 0.0;
+	perfil.push_back(vertice_aux);
+  parametros(perfil, num, 1);
+}
+
+
+//*************
+// _cilindro //
+//*************
+_cilindro::_cilindro(float radio, float altura, int num)
+{
+  vector<_vertex3f> perfil;
+	_vertex3f vertice_aux;
+  vertice_aux.x = radio; vertice_aux.y = -altura/2.0; vertice_aux.z = 0.0;
+	perfil.push_back(vertice_aux);
+  vertice_aux.x = radio; vertice_aux.y = altura/2.0; vertice_aux.z = 0.0;
+	perfil.push_back(vertice_aux);
+  parametros(perfil, num, 0);
+}
+
+
+//*************
+// _esfera //
+//*************
+_esfera::_esfera(float radio, int n, int num)
+{
+  vector<_vertex3f> perfil;
+	_vertex3f vertice_aux;
+  for (int i = 1; i < n; i++) 
+  {
+    vertice_aux.x = radio*cos(M_PI*i/n-M_PI/2.0);
+    vertice_aux.y = radio*sin(M_PI*i/n-M_PI/2.0);
+    vertice_aux.z = 0.0;
+    perfil.push_back(vertice_aux);
+  }
+  parametros(perfil, num, 2);
+}
+
+
 //****************
 // _rotacionply //
 //****************
 _rotacionply::_rotacionply() {}
 
-void _rotacionply::parametros(char *archivo, int num) {
+void _rotacionply::parametros(char *archivo, int num) 
+{
   _objeto_ply obj;
   obj.parametros(archivo);
-  _rotacion::parametros(obj.vertices, num);
+  _rotacion::parametros(obj.vertices, num, 0);
 }
 
 
-
-void _rotacion::parametros(vector<_vertex3f> perfil, int num)
+void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo)
 {
   _vertex3f vertice_aux;
   _vertex3i cara_aux;
   int num_aux;
+  float radio, altura;
 
   // Tratamiento de los vértices
   num_aux = perfil.size();
+
+  if (tipo == 1) 
+  {
+    num_aux = 1;
+    altura = perfil[1].y;
+  }
+
+  if (tipo == 2)
+    radio = sqrt(perfil[0].x*perfil[0].x + perfil[0].y*perfil[0].y);
+
   vertices.resize(num_aux*num+2);
+  
   for (int j = 0; j < num; j++)
   {
     for (int i = 0; i < num_aux; i++)
@@ -243,25 +299,28 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num)
   caras.resize(2*(num_aux-1)*num + 2*num);
 
   int c = 0;
-  for (int j = 0; j < num; j++)
-  {
-      for (int i = 0; i < num_aux-1; i++) {
-      caras[c]._0 = num_aux*j+i;
-      caras[c]._1 = num_aux*j+1+i;
-      caras[c]._2 = num_aux*((j+1)%num)+1+i;
-      c++;
-      caras[c]._0 = num_aux*((j+1)%num)+1+i;
-      caras[c]._1 = num_aux*((j+1)%num)+i;
-      caras[c]._2 = num_aux*j+i;
-      c++;
+  if (tipo == 0 || tipo == 2)
+    for (int j = 0; j < num; j++)
+    {
+        for (int i = 0; i < num_aux-1; i++) {
+        caras[c]._0 = num_aux*j+i;
+        caras[c]._1 = num_aux*j+1+i;
+        caras[c]._2 = num_aux*((j+1)%num)+1+i;
+        c++;
+        caras[c]._0 = num_aux*((j+1)%num)+1+i;
+        caras[c]._1 = num_aux*((j+1)%num)+i;
+        caras[c]._2 = num_aux*j+i;
+        c++;
+      }
     }
-  }
       
   // Tapa inferior
   if (fabs(perfil[0].x) > 0.0) 
   {
     vertices[num_aux*num]._0 = 0.0;
-    vertices[num_aux*num]._1 = perfil[0].y;
+    if (tipo == 0) vertices[num_aux*num]._1 = perfil[0].y;
+    if (tipo == 1) vertices[num_aux*num]._1 = -altura;
+    if (tipo == 2) vertices[num_aux*num]._1 = -radio;
     vertices[num_aux*num]._2 = 0.0;
 
     for (int j = 0; j < num; j++) 
@@ -277,7 +336,9 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num)
   if (fabs(perfil[num_aux-1].x) > 0.0) 
   {
     vertices[num_aux*num+1]._0 = 0.0;
-    vertices[num_aux*num+1]._1 = perfil[num_aux-1].y;
+    if (tipo == 0) vertices[num_aux*num+1]._1 = perfil[num_aux-1].y;
+    if (tipo == 1) vertices[num_aux*num+1]._1 = altura;
+    if (tipo == 2) vertices[num_aux*num+1]._1 = radio;
     vertices[num_aux*num+1]._2 = 0.0;
 
     for (int j = 0; j < num; j++) 

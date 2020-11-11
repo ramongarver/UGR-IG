@@ -74,7 +74,7 @@ class _rotacion: virtual public _triangulos3D
 	vector<_vertex3f> perfil;
 	public:
 		_rotacion();
-		void parametros(vector<_vertex3f> perfil, int num);
+		void parametros(vector<_vertex3f> perfil, int num, int tipo);
 };
 
 
@@ -94,7 +94,7 @@ class _cono: public _rotacion
 class _cilindro: public _rotacion
 { 
 	public:
-		_cilindro(float );
+		_cilindro(float radio, float altura, int num);
 };
 
 
@@ -116,35 +116,3 @@ class _rotacionply: public _rotacion, public _objeto_ply
 		_rotacionply();
 		void parametros(char *archivo, int num);
 };
-
-/*_esfera::_esfera(float radio, int n, int num)
-{
-	vector<_vertex3f> perfil;
-	_vertex3f aux;
-
-	for (int i = 0; i < n; i++) 
-	{
-		aux._0 =
-		aux._1 =
-		aux._2 = 
-	}
-
-
-}*/
-
-
-
-
-/*
-//*************
-// _rotacion //
-//*************
-class _rotacion: public _triangulos3D
-{ 
-	int num;
-	vector<_vertex3f> perfil;
-	public:
-		_rotacion();
-		void parametros(vector<_vertex3f> perfil, int num);
-};
-*/
