@@ -307,9 +307,7 @@ int main(int argc, char *argv[]) {
 	// creación del objeto ply
 	ply.parametros(argv[1]);
 
-	rotacionply.parametros(argv[1], 6);
-
-	//ply1 = new _objeto_ply(argv[1]);
+	rotacionply.parametros(argv[1], 12);
 
 	// inicio del bucle de eventos
 	glutMainLoop();
