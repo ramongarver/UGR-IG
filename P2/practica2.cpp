@@ -36,7 +36,7 @@ _objeto_ply  ply;
 _rotacion rotacion;
 _rotacionply rotacionply;
 _cono cono(1.0, 1.0, 12);
-_cilindro cilindro(1.0, 1.0, 15);
+_cilindro cilindro(1.0, 1.0, 16);
 _esfera esfera(0.5, 6, 19);
 
 
@@ -219,29 +219,25 @@ void special_key(int Tecla1,int x,int y)
 
 void initialize(void)
 {
+	// se inicalizan la ventana y los planos de corte
+	Size_x = 0.5;
+	Size_y = 0.5;
+	Front_plane = 1;
+	Back_plane = 1000;
 
-// se inicalizan la ventana y los planos de corte
-Size_x=0.5;
-Size_y=0.5;
-Front_plane=1;
-Back_plane=1000;
+	// se incia la posicion del observador, en el eje z
+	Observer_distance = 4*Front_plane;
+	Observer_angle_x = 0;
+	Observer_angle_y = 0;
 
-// se incia la posicion del observador, en el eje z
-Observer_distance=4*Front_plane;
-Observer_angle_x=0;
-Observer_angle_y=0;
+	// se indica cua*ply1l sera el color para limpiar la ventana	(r,v,a,al)
+	// blanco=(1,1,1,1) rojo=(1,0,0,1), ...
+	glClearColor(1,1,1,1);
 
-// se indica cua*ply1l sera el color para limpiar la ventana	(r,v,a,al)
-// blanco=(1,1,1,1) rojo=(1,0,0,1), ...
-glClearColor(1,1,1,1);
-
-// se habilita el z-bufer
-glEnable(GL_DEPTH_TEST);
-change_projection();
-glViewport(0,0,Window_width,Window_high);
-
-
-
+	// se habilita el z-bufer
+	glEnable(GL_DEPTH_TEST);
+	change_projection();
+	glViewport(0,0,Window_width,Window_high);
 }
 
 
@@ -253,15 +249,16 @@ glViewport(0,0,Window_width,Window_high);
 //***************************************************************************
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 	// perfil 
 	vector<_vertex3f> perfil2;
 	_vertex3f aux;
 
-	aux.x=1.0; aux.y=1.5; aux.z=0.0;
+	aux.x = 1.0; aux.y = 1.5; aux.z = 0.0;
 	perfil2.push_back(aux);
 	
-	aux.x=1.0; aux.y=-1.5; aux.z=0.0;
+	aux.x = 1.0; aux.y = -1.5; aux.z = 0.0;
 	perfil2.push_back(aux);
 
 

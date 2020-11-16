@@ -2,6 +2,7 @@
 #include <vector>
 #include <GL/gl.h>
 #include "vertex.h"
+#include <algorithm>
 
 const float AXIS_SIZE = 5000;
 typedef enum {POINTS, EDGES, SOLID_CHESS, SOLID} _modo;

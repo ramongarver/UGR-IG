@@ -270,6 +270,10 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo)
   int num_aux;
   float radio, altura;
 
+  // Revertimos la generatriz si no se ha incluido de abajo hacia arriba.
+  if (perfil.size() >= 2 && perfil[0].y > perfil[perfil.size()-1].y)
+    reverse(perfil.begin(), perfil.end());
+
   // Tratamiento de los vértices
   num_aux = perfil.size();
 
@@ -302,15 +306,16 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo)
   if (tipo == 0 || tipo == 2)
     for (int j = 0; j < num; j++)
     {
-        for (int i = 0; i < num_aux-1; i++) {
-        caras[c]._0 = num_aux*j+i;
-        caras[c]._1 = num_aux*j+1+i;
-        caras[c]._2 = num_aux*((j+1)%num)+1+i;
-        c++;
-        caras[c]._0 = num_aux*((j+1)%num)+1+i;
-        caras[c]._1 = num_aux*((j+1)%num)+i;
-        caras[c]._2 = num_aux*j+i;
-        c++;
+        for (int i = 0; i < num_aux-1; i++) 
+        {
+          caras[c]._0 = num_aux*j+1+i;
+          caras[c]._1 = num_aux*j+i;
+          caras[c]._2 = num_aux*((j+1)%num)+1+i;
+          c++;
+          caras[c]._0 = num_aux*((j+1)%num)+i;
+          caras[c]._1 = num_aux*((j+1)%num)+1+i;
+          caras[c]._2 = num_aux*j+i;
+          c++;
       }
     }
       
@@ -326,8 +331,8 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo)
     for (int j = 0; j < num; j++) 
     {
       caras[c]._0 = num_aux*num;
-      caras[c]._1 = num_aux*j;
-      caras[c]._2 = num_aux*((j+1)%num);
+      caras[c]._1 = num_aux*((j+1)%num);
+      caras[c]._2 = num_aux*j;
       c++;
     }
   }
