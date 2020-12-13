@@ -528,7 +528,7 @@ void _pierna::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
     glTranslatef(0.0, -0.4*altura/2 -0.15*altura/2, 0.0);
     glPushMatrix();
       glScalef(anchura, 0.4*altura, profundidad);
-      superior.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      superior.draw(modo, 1.0, 0.9608, 0.6118, r2, g2, b2, grosor);
     glPopMatrix();
 
     glTranslatef(0.0, -0.4*altura/2 -0.15*altura/2, 0.0);
@@ -541,13 +541,13 @@ void _pierna::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
     glTranslatef(0.0, -0.3*altura/2 -0.15*altura/2, 0.0);
     glPushMatrix();
       glScalef(anchura, 0.3*altura, profundidad);
-      inferior.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      inferior.draw(modo, 1.0, 0.9608, 0.6118, r2, g2, b2, grosor);
     glPopMatrix();
 
     glTranslatef(0.0, -0.3*altura/2 -0.1*altura/2, 0.5*profundidad);
     glPushMatrix();
       glScalef(1.5*anchura, 0.1*altura, 2*profundidad);
-      pie.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      pie.draw(modo, 0.6118, 0.8275, 1.0, r2, g2, b2, grosor);
     glPopMatrix();
 
   glPopMatrix();
@@ -607,7 +607,7 @@ void _brazo::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, 
     glTranslatef(0.0, -0.3*altura/2 -0.15*altura/2, 0.0);
     glPushMatrix();
       glScalef(anchura, 0.3*altura, profundidad);
-      superior.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      superior.draw(modo, 1.0, 0.5961, 0.5961, r2, g2, b2, grosor);
     glPopMatrix();
 
     glTranslatef(0.0, -0.3*altura/2 -0.15*altura/2, 0.0);
@@ -620,13 +620,13 @@ void _brazo::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, 
     glTranslatef(0.0, -0.4*altura/2 -0.15*altura/2, 0.0);
     glPushMatrix();
       glScalef(anchura, 0.4*altura, profundidad);
-      inferior.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      inferior.draw(modo, 1.0, 0.5961, 0.5961, r2, g2, b2, grosor);
     glPopMatrix();
 
     glTranslatef(0.0, -0.4*altura/2 -0.1*altura/2, 0);
     glPushMatrix();
       glScalef(1.5*anchura, 0.1*altura, profundidad);
-      mano.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      mano.draw(modo, 0.9059, 1.0, 0.7216, r2, g2, b2, grosor);
     glPopMatrix();
 
   glPopMatrix();
@@ -684,36 +684,36 @@ _robot::_robot()
 void _robot::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
 {
   glPushMatrix();
-    tronco.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+    tronco.draw(modo, 0.4588, 0.9255, 0.6196, r2, g2, b2, grosor);
     
     glPushMatrix();
       glRotatef(giro_cuello,0,1,0);
       glPushMatrix();
         glTranslatef(0.0, tronco.altura/2 + cuello.altura/2, 0.0);
-        cuello.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+        cuello.draw(modo, 0.8549, 0.8549, 0.8549, r2, g2, b2, grosor);
         glTranslatef(0.0, cuello.altura/2 + cabeza.altura/2, 0.0);
-        cabeza.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+        cabeza.draw(modo, 0.0, 0.8392, 0.8392, r2, g2, b2, grosor);
       glPopMatrix();
     glPopMatrix();
 
     glPushMatrix();
       glTranslatef(0.125, -tronco.altura/2 -0.15*pierna_izd.altura/2, 0.0);
-      pierna_izd.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      pierna_izd.draw(modo, 0.9451, 0.7216, 1.0, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
       glTranslatef(-0.125, -tronco.altura/2 -0.15*pierna_dch.altura/2, 0.0);
-      pierna_dch.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      pierna_dch.draw(modo, 0.9451, 0.7216, 1.0, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
       glTranslatef(tronco.anchura/2 + 1.2*brazo_izd.anchura/2, 0.1875, 0.0);
-      brazo_izd.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      brazo_izd.draw(modo, 1.0, 0.8706, 0.502, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
       glTranslatef(-tronco.anchura/2 - 1.2*brazo_dch.anchura/2, 0.1875, 0.0);
-      brazo_dch.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+      brazo_dch.draw(modo, 1.0, 0.8706, 0.502, r2, g2, b2, grosor);
     glPopMatrix();
     
   glPopMatrix();

@@ -10,7 +10,7 @@ using namespace std;
 // Tipos de objetos
 typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CONO, CILINDRO, ESFERA, TANQUE, ROBOT} _tipo_objeto;
 _tipo_objeto t_objeto = ROBOT;	// Tipo de objeto por defecto.
-_modo   	 	 modo = POINTS; // Tipo de modo por defecto.
+_modo   	 	 modo = SOLID; // Tipo de modo por defecto.
 
 // Variables que definen la posición de la cámara en coordenadas polares
 GLfloat Observer_distance,
