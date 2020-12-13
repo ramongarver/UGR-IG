@@ -8,8 +8,8 @@
 using namespace std;
 
 // Tipos de objetos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CONO, CILINDRO, ESFERA, ARTICULADO, ARTICULADO_ROBOT} _tipo_objeto;
-_tipo_objeto t_objeto = CUBO;	// Tipo de objeto por defecto.
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CONO, CILINDRO, ESFERA, TANQUE, ROBOT} _tipo_objeto;
+_tipo_objeto t_objeto = ROBOT;	// Tipo de objeto por defecto.
 _modo   	 	 modo = POINTS; // Tipo de modo por defecto.
 
 // Variables que definen la posición de la cámara en coordenadas polares
@@ -35,9 +35,9 @@ _piramide piramide;
 _objeto_ply  ply; 
 _rotacion rotacion;
 _rotacionply rotacionply;
-_cono cono(1.0, 1.0, 12);
-_cilindro cilindro(1.0, 1.0, 16);
-_esfera esfera(0.5, 6, 19);
+_cono cono;
+_cilindro cilindro;
+_esfera esfera;
 _tanque tanque;
 _robot robot;
 
@@ -120,8 +120,8 @@ void draw_objects()
 		case CONO: 			cono.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);			break;
 		case CILINDRO: 		cilindro.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);		break;
 		case ESFERA: 		esfera.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);		break;
-		case ARTICULADO:	tanque.draw(modo,0.5,0.7,0.2,0.3,0.6,0.3,2);		break;
-		case ARTICULADO_ROBOT: robot.draw(modo,0.5,0.7,0.2,0.3,0.6,0.3,2);		break;
+		case TANQUE:		tanque.draw(modo,0.5,0.7,0.2,0.3,0.6,0.3,2);		break;
+		case ROBOT: 		robot.draw(modo,0.5,0.7,0.2,0.3,0.6,0.3,2);			break;
 	}
 }
 
@@ -169,6 +169,9 @@ void change_window_size(int Ancho1,int Alto1)
 // posicion y del raton
 //***************************************************************************
 
+bool lado_derecho = true; // Derecho true | Izquierdo false
+float velocidad_animacion_anterior = 0.0;
+float velocidad_animacion = 0.0;
 void normal_key(unsigned char Tecla1,int x,int y)
 {
 	switch (toupper(Tecla1))
@@ -180,16 +183,50 @@ void normal_key(unsigned char Tecla1,int x,int y)
 		case '3': modo = SOLID;					break;
 		case '4': modo = SOLID_CHESS;			break;
 
-		case 'P': t_objeto = PIRAMIDE;			break;
+		case 'Z': t_objeto = ROTACION;			break;
+		case 'X': t_objeto = PIRAMIDE;			break;
 		case 'C': t_objeto = CUBO;				break;
-		case 'O': t_objeto = OBJETO_PLY;		break;	
-		case 'R': t_objeto = ROTACION;			break;
-		case 'T': t_objeto = ROTACION_PLY;		break;
-		case 'N': t_objeto = CONO;				break;
-		case 'I': t_objeto = CILINDRO;			break;
-		case 'E': t_objeto = ESFERA;			break;
-		case 'A': t_objeto = ARTICULADO;		break;
-		case '7': t_objeto = ARTICULADO_ROBOT;	break;
+		case 'V': t_objeto = CONO;				break;
+		case 'B': t_objeto = CILINDRO;			break;
+		case 'N': t_objeto = ESFERA;			break;
+		case 'M': t_objeto = ROTACION;			break;
+		case ',': t_objeto = OBJETO_PLY;		break;
+		case '.': t_objeto = ROTACION_PLY;		break;
+
+
+		case 'R': t_objeto = ROBOT;				break;
+		case 'T': t_objeto = TANQUE;			break;
+		
+		case '8': lado_derecho = !lado_derecho;	break;
+
+		case 'A': 
+			if	(velocidad_animacion == 0.0) 
+			{
+				if (velocidad_animacion_anterior != 0.0)
+					velocidad_animacion = velocidad_animacion_anterior;
+				else
+					velocidad_animacion = 1.0;
+			}
+			else 
+			{
+				velocidad_animacion_anterior = velocidad_animacion;
+				velocidad_animacion = 0.0;
+			}
+			break;
+		case 'S':
+			if (velocidad_animacion != 0.0) 
+			{
+				velocidad_animacion+=0.2;
+				if (velocidad_animacion > 10.0) velocidad_animacion = 10.0;
+			}
+			break;
+		case 'D':
+			if (velocidad_animacion != 0.0) 
+			{
+				velocidad_animacion-=0.2;
+				if (velocidad_animacion < 0.2) velocidad_animacion = 0.2;
+			}
+			break;
 	}
 	glutPostRedisplay();
 }
@@ -214,57 +251,242 @@ void special_key(int Tecla1,int x,int y)
 		case GLUT_KEY_DOWN:Observer_angle_x++;break;
 		case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
 		case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
-
-		case GLUT_KEY_F1:tanque.giro_tubo+=1;
-        	if (tanque.giro_tubo > tanque.giro_tubo_max)
-				tanque.giro_tubo = tanque.giro_tubo_max;
-        	break;
-        case GLUT_KEY_F2:tanque.giro_tubo-=1;
-			if (tanque.giro_tubo < tanque.giro_tubo_min)
-				tanque.giro_tubo = tanque.giro_tubo_min;
-			break;
-        case GLUT_KEY_F3:tanque.giro_torreta+=5;break;
-        case GLUT_KEY_F4:tanque.giro_torreta-=5;break;
         
-		case GLUT_KEY_F5: robot.giro_cuello+=2;
-			if(robot.giro_cuello > robot.giro_cuello_max) 
-				robot.giro_cuello = robot.giro_cuello_max;
+		case GLUT_KEY_F1:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho) 
+					{
+						robot.pierna_dch.giro_cadera+=3;
+						if (robot.pierna_dch.giro_cadera > robot.pierna_dch.giro_cadera_max) 
+							robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_max;
+					}
+					else
+					{
+						robot.pierna_izd.giro_cadera+=3;
+						if (robot.pierna_izd.giro_cadera > robot.pierna_izd.giro_cadera_max) 
+							robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_max;
+					}					
+					break;
+				case TANQUE:
+					tanque.giro_tubo+=1;
+					if (tanque.giro_tubo > tanque.giro_tubo_max)
+						tanque.giro_tubo = tanque.giro_tubo_max;
+					break;
+			}
 			break;
-		case GLUT_KEY_F6: robot.giro_cuello-=2;
-			if (robot.giro_cuello < robot.giro_cuello_min) 
-				robot.giro_cuello = robot.giro_cuello_min;
+
+		case GLUT_KEY_F2:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho) 
+					{
+						robot.pierna_dch.giro_cadera-=3;
+						if (robot.pierna_dch.giro_cadera < robot.pierna_dch.giro_cadera_min) 
+							robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_min;
+					}
+					else
+					{
+						robot.pierna_izd.giro_cadera-=3;
+						if (robot.pierna_izd.giro_cadera < robot.pierna_izd.giro_cadera_min) 
+							robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_min;
+					}
+					break;
+				case TANQUE:
+					tanque.giro_tubo-=1;
+					if (tanque.giro_tubo < tanque.giro_tubo_min)
+						tanque.giro_tubo = tanque.giro_tubo_min;
+					break;
+			}
 			break;
-		case GLUT_KEY_F7: robot.pierna_izd.giro_cadera+=3;
-			if (robot.pierna_izd.giro_cadera > robot.pierna_izd.giro_cadera_max) 
-				robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_max;
+		
+		case GLUT_KEY_F3:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho) 
+					{				
+						robot.pierna_dch.giro_rodilla+=3;
+						if (robot.pierna_dch.giro_rodilla > robot.pierna_dch.giro_rodilla_max)
+							robot.pierna_dch.giro_rodilla = robot.pierna_dch.giro_rodilla_max;
+					}
+					else
+					{
+						robot.pierna_izd.giro_rodilla+=3;
+						if (robot.pierna_izd.giro_rodilla > robot.pierna_izd.giro_rodilla_max)
+							robot.pierna_izd.giro_rodilla = robot.pierna_izd.giro_rodilla_max;
+					}
+					break;
+				case TANQUE: tanque.giro_torreta+=5; break;
+			}
 			break;
-		case GLUT_KEY_F8: robot.pierna_izd.giro_cadera-=3;
-			if (robot.pierna_izd.giro_cadera < robot.pierna_izd.giro_cadera_min) 
-				robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_min;
+		
+		case GLUT_KEY_F4:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho) 
+					{
+						robot.pierna_dch.giro_rodilla-=3;
+						if (robot.pierna_dch.giro_rodilla < robot.pierna_dch.giro_rodilla_min)
+							robot.pierna_dch.giro_rodilla = robot.pierna_dch.giro_rodilla_min;
+					}	
+					else
+					{
+						robot.pierna_izd.giro_rodilla-=3;
+						if (robot.pierna_izd.giro_rodilla < robot.pierna_izd.giro_rodilla_min)
+							robot.pierna_izd.giro_rodilla = robot.pierna_izd.giro_rodilla_min;
+					}
+					break;
+				case TANQUE: tanque.giro_torreta-=5; break;
+
+			}
 			break;
-		case GLUT_KEY_F9: robot.pierna_izd.giro_rodilla+=3;
-			if (robot.pierna_izd.giro_rodilla > robot.pierna_izd.giro_rodilla_max)
-				robot.pierna_izd.giro_rodilla = robot.pierna_izd.giro_rodilla_max;
+
+		case GLUT_KEY_F5:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho)
+					{
+						robot.brazo_dch.giro_hombro_x+=4;
+						if (robot.brazo_dch.giro_hombro_x > robot.brazo_dch.giro_hombro_max_x)
+							robot.brazo_dch.giro_hombro_x = robot.brazo_dch.giro_hombro_max_x;
+					}
+					else
+					{
+						robot.brazo_izd.giro_hombro_x+=4;
+						if (robot.brazo_izd.giro_hombro_x > robot.brazo_izd.giro_hombro_max_x)
+							robot.brazo_izd.giro_hombro_x = robot.brazo_izd.giro_hombro_max_x;
+					}
+					break;
+			}
 			break;
-		case GLUT_KEY_F10: robot.pierna_izd.giro_rodilla-=3;
-			if (robot.pierna_izd.giro_rodilla < robot.pierna_izd.giro_rodilla_min)
-				robot.pierna_izd.giro_rodilla = robot.pierna_izd.giro_rodilla_min;
+
+		case GLUT_KEY_F6:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho)
+					{
+						robot.brazo_dch.giro_hombro_x-=4;
+						if (robot.brazo_dch.giro_hombro_x < robot.brazo_dch.giro_hombro_min_x)
+							robot.brazo_dch.giro_hombro_x = robot.brazo_dch.giro_hombro_min_x;
+					}
+					else
+					{
+						robot.brazo_izd.giro_hombro_x-=4;
+						if (robot.brazo_izd.giro_hombro_x < robot.brazo_izd.giro_hombro_min_x)
+							robot.brazo_izd.giro_hombro_x = robot.brazo_izd.giro_hombro_min_x;
+					}
+					break;
+			}
 			break;
-		case GLUT_KEY_F11: robot.pierna_dch.giro_cadera+=3;
-			if (robot.pierna_dch.giro_cadera > robot.pierna_dch.giro_cadera_max) 
-				robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_max;
+	
+		case GLUT_KEY_F7:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho)
+					{
+						robot.brazo_dch.giro_hombro_z-=4;
+						if (robot.brazo_dch.giro_hombro_z < -robot.brazo_dch.giro_hombro_max_z)
+							robot.brazo_dch.giro_hombro_z = -robot.brazo_dch.giro_hombro_max_z;
+					}
+					else
+					{
+						robot.brazo_izd.giro_hombro_z+=4;
+						if (robot.brazo_izd.giro_hombro_z > robot.brazo_izd.giro_hombro_max_z)
+							robot.brazo_izd.giro_hombro_z = robot.brazo_izd.giro_hombro_max_z;
+					}
+					break;
+			}
 			break;
-		case GLUT_KEY_F12: robot.pierna_dch.giro_cadera-=3;
-			if (robot.pierna_dch.giro_cadera < robot.pierna_dch.giro_cadera_min) 
-				robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_min;
+		
+		case GLUT_KEY_F8:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho)
+					{
+						robot.brazo_dch.giro_hombro_z+=4;
+						if (robot.brazo_dch.giro_hombro_z > -robot.brazo_dch.giro_hombro_min_z)
+							robot.brazo_dch.giro_hombro_z = -robot.brazo_dch.giro_hombro_min_z;	
+					}
+					else
+					{
+						robot.brazo_izd.giro_hombro_z-=4;
+						if (robot.brazo_izd.giro_hombro_z < robot.brazo_izd.giro_hombro_min_z)
+							robot.brazo_izd.giro_hombro_z = robot.brazo_izd.giro_hombro_min_z;
+					}
+					break;
+			}
 			break;
-		case GLUT_KEY_HOME: robot.pierna_dch.giro_rodilla+=3;
-			if (robot.pierna_dch.giro_rodilla > robot.pierna_dch.giro_rodilla_max)
-				robot.pierna_dch.giro_rodilla = robot.pierna_dch.giro_rodilla_max;
+
+		case GLUT_KEY_F9:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho)
+					{
+						robot.brazo_dch.giro_codo+=3;
+						if (robot.brazo_dch.giro_codo > robot.brazo_dch.giro_codo_max)
+							robot.brazo_dch.giro_codo = robot.brazo_dch.giro_codo_max;
+					}
+					else
+					{
+						robot.brazo_izd.giro_codo+=3;
+						if (robot.brazo_izd.giro_codo > robot.brazo_izd.giro_codo_max)
+							robot.brazo_izd.giro_codo = robot.brazo_izd.giro_codo_max;
+					}
+					break;
+			}
 			break;
-		case GLUT_KEY_END: robot.pierna_dch.giro_rodilla-=3;
-			if (robot.pierna_dch.giro_rodilla < robot.pierna_dch.giro_rodilla_min)
-				robot.pierna_dch.giro_rodilla = robot.pierna_dch.giro_rodilla_min;
+
+		case GLUT_KEY_F10:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					if (lado_derecho)
+					{
+						robot.brazo_dch.giro_codo-=3;
+						if (robot.brazo_dch.giro_codo < robot.brazo_dch.giro_codo_min)
+							robot.brazo_dch.giro_codo = robot.brazo_dch.giro_codo_min;
+					}
+					else
+					{
+						robot.brazo_izd.giro_codo-=3;
+						if (robot.brazo_izd.giro_codo < robot.brazo_izd.giro_codo_min)
+							robot.brazo_izd.giro_codo = robot.brazo_izd.giro_codo_min;
+					}
+					break;
+			}
+			break;
+
+		case GLUT_KEY_F11:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					robot.giro_cuello+=2;
+					if(robot.giro_cuello > robot.giro_cuello_max) 
+						robot.giro_cuello = robot.giro_cuello_max;
+					break;
+				
+			}
+			break;
+
+		case GLUT_KEY_F12:
+			switch (t_objeto)
+			{
+				case ROBOT:
+					robot.giro_cuello-=2;
+					if(robot.giro_cuello < robot.giro_cuello_min) 
+						robot.giro_cuello = robot.giro_cuello_min;
+					break;
+				
+			}
 			break;
 
 	}
@@ -299,7 +521,139 @@ void initialize(void)
 	glViewport(0,0,Window_width,Window_high);
 }
 
-void movimiento(){}
+int girando_cuello = 0;
+int girando_pierna_izd = 0;
+int girando_pierna_dch = 1;
+int girando_brazo_izd = 1;
+int girando_brazo_dch = 0;
+int girando_codo_izd = 1;
+int girando_codo_dch = 0;
+
+void movimiento()
+{
+	if (velocidad_animacion != 0) 
+	{
+		if (girando_cuello == 0) 
+		{
+			robot.giro_cuello-=velocidad_animacion;
+			if (robot.giro_cuello < robot.giro_cuello_min + 30.0)
+			{
+				robot.giro_cuello = robot.giro_cuello_min + 30.0;
+				girando_cuello = 1;
+			}
+		}
+		if (girando_cuello == 1) 
+		{
+			robot.giro_cuello+=velocidad_animacion;
+			if (robot.giro_cuello > robot.giro_cuello_max - 30.0) 
+			{
+				
+				robot.giro_cuello = robot.giro_cuello_max - 30.0;
+				girando_cuello = 0;
+			}
+		}
+
+		if (girando_pierna_izd == 0) 
+		{
+			robot.pierna_izd.giro_cadera-=velocidad_animacion;
+			if (robot.pierna_izd.giro_cadera < robot.pierna_izd.giro_cadera_min + 40.0)
+			{
+				robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_min + 40.0;
+				girando_pierna_izd = 1;
+			}
+		}
+		if (girando_pierna_izd == 1) 
+		{
+			robot.pierna_izd.giro_cadera+=velocidad_animacion;
+			if (robot.pierna_izd.giro_cadera > robot.pierna_izd.giro_cadera_max - 10.0) 
+			{
+				
+				robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_max -10.0;
+				girando_pierna_izd = 0;
+			}
+		}
+
+		if (girando_pierna_dch == 0) 
+		{
+			robot.pierna_dch.giro_cadera-=velocidad_animacion;
+			if (robot.pierna_dch.giro_cadera < robot.pierna_dch.giro_cadera_min + 40.0)
+			{
+				robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_min + 40.0;
+				girando_pierna_dch = 1;
+			}
+		}
+		if (girando_pierna_dch == 1) 
+		{
+			robot.pierna_dch.giro_cadera+=velocidad_animacion;
+			if (robot.pierna_dch.giro_cadera > robot.pierna_dch.giro_cadera_max - 10.0) 
+			{
+				
+				robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_max - 10.0;
+				girando_pierna_dch = 0;
+			}
+		}
+
+		if (girando_brazo_izd == 0) 
+		{
+			robot.brazo_izd.giro_hombro_x-=velocidad_animacion;
+			if (robot.brazo_izd.giro_hombro_x < robot.brazo_izd.giro_hombro_min_x + 140.0)
+			{
+				robot.brazo_izd.giro_hombro_x = robot.brazo_izd.giro_hombro_min_x + 140.0;
+				girando_brazo_izd = 1;
+			}
+		}
+		if (girando_brazo_izd == 1) 
+		{
+			robot.brazo_izd.giro_hombro_x+=velocidad_animacion;
+			if (robot.brazo_izd.giro_hombro_x > robot.brazo_izd.giro_hombro_max_x - 25.0)
+			{
+				robot.brazo_izd.giro_hombro_x = robot.brazo_izd.giro_hombro_max_x - 25.0;
+				girando_brazo_izd = 0;
+			}
+		}
+
+		if (girando_brazo_dch == 0) 
+		{
+			robot.brazo_dch.giro_hombro_x-=velocidad_animacion;
+			if (robot.brazo_dch.giro_hombro_x < robot.brazo_dch.giro_hombro_min_x + 140.0)
+			{
+				robot.brazo_dch.giro_hombro_x = robot.brazo_dch.giro_hombro_min_x + 140.0;
+				girando_brazo_dch = 1;
+			}
+		}
+		if (girando_brazo_dch == 1) 
+		{
+			robot.brazo_dch.giro_hombro_x+=velocidad_animacion;
+			if (robot.brazo_dch.giro_hombro_x > robot.brazo_dch.giro_hombro_max_x - 25.0)
+			{
+				robot.brazo_dch.giro_hombro_x = robot.brazo_dch.giro_hombro_max_x - 25.0;
+				girando_brazo_dch = 0;
+			}
+		}
+
+		if (girando_codo_izd == 0) 
+		{
+			robot.brazo_izd.giro_codo-=velocidad_animacion;
+			if (robot.brazo_izd.giro_codo < robot.brazo_izd.giro_codo_min + 50.0)
+			{
+				robot.brazo_izd.giro_codo = robot.brazo_izd.giro_codo_min + 50.0;
+				girando_codo_izd = 1;
+			}
+		}
+		if (girando_codo_izd == 1) 
+		{
+			robot.brazo_izd.giro_codo+=velocidad_animacion;
+			if (robot.brazo_izd.giro_codo > robot.brazo_izd.giro_codo_max)
+			{
+				robot.brazo_izd.giro_codo = robot.brazo_izd.giro_codo_max;
+				girando_codo_izd = 0;
+			}
+		}
+
+	}	
+
+	glutPostRedisplay();
+}
 
 //***************************************************************************
 // Programa principal

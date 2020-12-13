@@ -586,13 +586,13 @@ _brazo::_brazo(float anchura, float altura, float profundidad)
   this->altura = altura;
   this->profundidad = profundidad;
 
-  this->giro_hombro_x = -90.0;
-  this->giro_hombro_max_x = 60.0;
-  this->giro_hombro_min_x = -210.0;
-  this->giro_hombro_z = -30.0;
-  this->giro_hombro_max_z = 0.0;
-  this->giro_hombro_min_z = -160.0;
-  this->giro_codo = -90.0;
+  this->giro_hombro_x = 0.0;
+  this->giro_hombro_max_x = 75.0;
+  this->giro_hombro_min_x = -190.0;
+  this->giro_hombro_z = 0.0;
+  this->giro_hombro_max_z = 100.0;
+  this->giro_hombro_min_z = 0.0;
+  this->giro_codo = -50.0;
   this->giro_codo_max = 0.0;
   this->giro_codo_min = -150.0;
 };
@@ -602,12 +602,12 @@ void _brazo::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, 
   glPushMatrix();
   
     glPushMatrix();
-      glScalef(anchura, 0.15*altura, profundidad);
+      glScalef(1.2*anchura, 0.15*altura, profundidad);
       hombro.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
 
     glRotatef(giro_hombro_x,1,0,0);
-    glRotatef(giro_hombro_z,1,0,0);    
+    glRotatef(giro_hombro_z,0,0,1);    
     glTranslatef(0.0, -0.3*altura/2 -0.15*altura/2, 0.0);
     glPushMatrix();
       glScalef(anchura, 0.3*altura, profundidad);
@@ -717,12 +717,12 @@ void _robot::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, 
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(tronco.getAnchura()/2 + brazo_izd.anchura/2, 0.1875, 0.0);
+      glTranslatef(tronco.getAnchura()/2 + 1.2*brazo_izd.anchura/2, 0.1875, 0.0);
       brazo_izd.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(-tronco.getAnchura()/2 - brazo_dch.anchura/2, 0.1875, 0.0);
+      glTranslatef(-tronco.getAnchura()/2 - 1.2*brazo_dch.anchura/2, 0.1875, 0.0);
       brazo_dch.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
     

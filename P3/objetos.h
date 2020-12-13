@@ -85,7 +85,7 @@ class _rotacion: virtual public _triangulos3D
 class _cono: public _rotacion
 { 
 	public:
-		_cono(float radio, float altura, int num);
+		_cono(float radio = 0.5, float altura = 1.0, int num = 20);
 };
 
 
