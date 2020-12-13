@@ -198,7 +198,7 @@ void normal_key(unsigned char Tecla1,int x,int y)
 		case 'R': t_objeto = ROBOT;				break;
 		case 'T': t_objeto = TANQUE;			break;
 		
-		case '8': lado_derecho = !lado_derecho;	break;
+		case 'Y': lado_derecho = !lado_derecho;	break;
 
 		case 'W':
 			if (velocidad_articulacion != 0.0) 
