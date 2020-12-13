@@ -572,10 +572,6 @@ void _tronco::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
   glPopMatrix();
 }
 
-float _tronco::getAnchura() { return this->anchura; }
-float _tronco::getAltura() { return this->altura; }
-float _tronco::getProfundidad() { return this->profundidad; }
-
 
 //**********
 // _brazo //
@@ -636,6 +632,7 @@ void _brazo::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, 
   glPopMatrix();
 }
 
+
 //***********
 // _cuello //
 //***********
@@ -653,10 +650,6 @@ void _cuello::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
     cuello.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
   glPopMatrix();
 }
-
-float _cuello::getAnchura() { return this->anchura; }
-float _cuello::getAltura() { return this->altura; }
-float _cuello::getProfundidad() { return this->profundidad; }
 
 
 //***********
@@ -677,9 +670,6 @@ void _cabeza::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
   glPopMatrix();
 }
 
-float _cabeza::getAnchura() { return this->anchura; }
-float _cabeza::getAltura() { return this->altura; }
-float _cabeza::getProfundidad() { return this->profundidad; }
 
 //**********
 // _robot //
@@ -699,30 +689,30 @@ void _robot::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, 
     glPushMatrix();
       glRotatef(giro_cuello,0,1,0);
       glPushMatrix();
-        glTranslatef(0.0, tronco.getAltura()/2 + cuello.getAltura()/2, 0.0);
+        glTranslatef(0.0, tronco.altura/2 + cuello.altura/2, 0.0);
         cuello.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
-        glTranslatef(0.0, cuello.getAltura()/2 + cabeza.getAltura()/2, 0.0);
+        glTranslatef(0.0, cuello.altura/2 + cabeza.altura/2, 0.0);
         cabeza.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
       glPopMatrix();
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(0.125, -tronco.getAltura()/2 -0.15*pierna_izd.altura/2, 0.0);
+      glTranslatef(0.125, -tronco.altura/2 -0.15*pierna_izd.altura/2, 0.0);
       pierna_izd.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(-0.125, -tronco.getAltura()/2 -0.15*pierna_dch.altura/2, 0.0);
+      glTranslatef(-0.125, -tronco.altura/2 -0.15*pierna_dch.altura/2, 0.0);
       pierna_dch.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(tronco.getAnchura()/2 + 1.2*brazo_izd.anchura/2, 0.1875, 0.0);
+      glTranslatef(tronco.anchura/2 + 1.2*brazo_izd.anchura/2, 0.1875, 0.0);
       brazo_izd.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(-tronco.getAnchura()/2 - 1.2*brazo_dch.anchura/2, 0.1875, 0.0);
+      glTranslatef(-tronco.anchura/2 - 1.2*brazo_dch.anchura/2, 0.1875, 0.0);
       brazo_dch.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
     glPopMatrix();
     

@@ -226,17 +226,14 @@ class _tronco: public _triangulos3D
 {
 	private:
 		_cubo tronco;
+
+	public:
 		float anchura;
 		float altura;
 		float profundidad;
 
-	public:
 		_tronco(float anchura = 0.5, float altura = 0.75, float profundidad = 0.25);
 		void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
-		float getAnchura();
-		float getAltura();
-		float getProfundidad();
-
 };
 
 
@@ -267,7 +264,7 @@ class _brazo: public _triangulos3D
 		float giro_codo_max;
 		float giro_codo_min;
 
-		_brazo(float anchura = 0.1, float altura = 0.8, float profundidad = 0.20);
+		_brazo(float anchura = 0.1, float altura = 0.8, float profundidad = 0.15);
 		void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
 };
 
@@ -279,38 +276,32 @@ class _cuello: public _triangulos3D
 {
 	private:
 		_cilindro cuello;
+
+	public:
 		float anchura;
 		float altura;
 		float profundidad;
 
-	public:
 		_cuello(float anchura = 0.15, float altura = 0.10, float profundidad = 0.10);
 		void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
-		float getAnchura();
-		float getAltura();
-		float getProfundidad();
-
 };
 
 
 //***********
-// _cabeza //
+// _cabeza ///
 //***********
 class _cabeza: public _triangulos3D
 {
 	private:
 		_cubo cabeza;
+
+	public:
 		float anchura;
 		float altura;
 		float profundidad;
 
-	public:
 		_cabeza(float anchura = 0.3, float altura = 0.35, float profundidad = 0.15);
 		void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
-		float getAnchura();
-		float getAltura();
-		float getProfundidad();
-
 };
 
 //************
