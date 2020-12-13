@@ -222,6 +222,7 @@ void normal_key(unsigned char Tecla1,int x,int y)
 					velocidad_animacion = velocidad_animacion_anterior;
 				else
 					velocidad_animacion = 1.0;
+				robot = _robot();
 			}
 			else 
 			{

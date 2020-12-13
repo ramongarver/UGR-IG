@@ -45,6 +45,7 @@ En función del lado del cuerpo que se mueva:
 - F12 -- Mover cara hacia la derecha
 
 #### Animación:
+Al activar la animación el robot vuelve al estado original.
 - A -- Activar/Desactivar animación
 - S -- Aumentar la velocidad de la animación
 - D -- Disminuir la velocidad de la animación
