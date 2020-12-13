@@ -56,7 +56,9 @@ En función del lado del cuerpo que se mueva:
 ## Compilación y ejecución
 Para compilar el proyecto:
 - ``make``
+
 Para ejecutar el proyecto:
 - ``./practica3 beethoven``
+
 Para limpiar los archivos del proyecto:
 - ``make clean``
