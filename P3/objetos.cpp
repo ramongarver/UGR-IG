@@ -46,7 +46,6 @@ void _triangulos3D::draw_aristas(float r, float g, float b, int grosor)
   glEnd();
 }
 
-
 //**************************
 // Dibujar en modo sólido //
 //**************************
@@ -153,6 +152,7 @@ _piramide::_piramide(float tam, float al)
 	caras[4]._0 = 3;	caras[4]._1 = 1;	caras[4]._2 = 0;
 	caras[5]._0 = 3;	caras[5]._1 = 2;	caras[5]._2 = 1;
 }
+
 
 //***************
 // _objeto_ply //

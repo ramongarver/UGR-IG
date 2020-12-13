@@ -170,6 +170,7 @@ void change_window_size(int Ancho1,int Alto1)
 //***************************************************************************
 
 bool lado_derecho = true; // Derecho true | Izquierdo false
+float velocidad_articulacion = 1.0;
 float velocidad_animacion_anterior = 0.0;
 float velocidad_animacion = 0.0;
 void normal_key(unsigned char Tecla1,int x,int y)
@@ -198,6 +199,21 @@ void normal_key(unsigned char Tecla1,int x,int y)
 		case 'T': t_objeto = TANQUE;			break;
 		
 		case '8': lado_derecho = !lado_derecho;	break;
+
+		case 'W':
+			if (velocidad_articulacion != 0.0) 
+			{
+				velocidad_articulacion+=0.2;
+				if (velocidad_articulacion > 3.0) velocidad_articulacion = 10.0;
+			}
+			break;
+		case 'E':
+			if (velocidad_articulacion != 0.0) 
+			{
+				velocidad_articulacion-=0.2;
+				if (velocidad_articulacion < 0.2) velocidad_articulacion = 0.2;
+			}
+			break;
 
 		case 'A': 
 			if	(velocidad_animacion == 0.0) 
@@ -258,19 +274,19 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho) 
 					{
-						robot.pierna_dch.giro_cadera+=3;
+						robot.pierna_dch.giro_cadera+=3*velocidad_articulacion;
 						if (robot.pierna_dch.giro_cadera > robot.pierna_dch.giro_cadera_max) 
 							robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_max;
 					}
 					else
 					{
-						robot.pierna_izd.giro_cadera+=3;
+						robot.pierna_izd.giro_cadera+=3*velocidad_articulacion;
 						if (robot.pierna_izd.giro_cadera > robot.pierna_izd.giro_cadera_max) 
 							robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_max;
 					}					
 					break;
 				case TANQUE:
-					tanque.giro_tubo+=1;
+					tanque.giro_tubo+=1*velocidad_articulacion;
 					if (tanque.giro_tubo > tanque.giro_tubo_max)
 						tanque.giro_tubo = tanque.giro_tubo_max;
 					break;
@@ -283,19 +299,19 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho) 
 					{
-						robot.pierna_dch.giro_cadera-=3;
+						robot.pierna_dch.giro_cadera-=3*velocidad_articulacion;
 						if (robot.pierna_dch.giro_cadera < robot.pierna_dch.giro_cadera_min) 
 							robot.pierna_dch.giro_cadera = robot.pierna_dch.giro_cadera_min;
 					}
 					else
 					{
-						robot.pierna_izd.giro_cadera-=3;
+						robot.pierna_izd.giro_cadera-=3*velocidad_articulacion;
 						if (robot.pierna_izd.giro_cadera < robot.pierna_izd.giro_cadera_min) 
 							robot.pierna_izd.giro_cadera = robot.pierna_izd.giro_cadera_min;
 					}
 					break;
 				case TANQUE:
-					tanque.giro_tubo-=1;
+					tanque.giro_tubo-=1*velocidad_articulacion;
 					if (tanque.giro_tubo < tanque.giro_tubo_min)
 						tanque.giro_tubo = tanque.giro_tubo_min;
 					break;
@@ -308,18 +324,18 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho) 
 					{				
-						robot.pierna_dch.giro_rodilla+=3;
+						robot.pierna_dch.giro_rodilla+=3*velocidad_articulacion;
 						if (robot.pierna_dch.giro_rodilla > robot.pierna_dch.giro_rodilla_max)
 							robot.pierna_dch.giro_rodilla = robot.pierna_dch.giro_rodilla_max;
 					}
 					else
 					{
-						robot.pierna_izd.giro_rodilla+=3;
+						robot.pierna_izd.giro_rodilla+=3*velocidad_articulacion;
 						if (robot.pierna_izd.giro_rodilla > robot.pierna_izd.giro_rodilla_max)
 							robot.pierna_izd.giro_rodilla = robot.pierna_izd.giro_rodilla_max;
 					}
 					break;
-				case TANQUE: tanque.giro_torreta+=5; break;
+				case TANQUE: tanque.giro_torreta+=5*velocidad_articulacion; break;
 			}
 			break;
 		
@@ -329,18 +345,18 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho) 
 					{
-						robot.pierna_dch.giro_rodilla-=3;
+						robot.pierna_dch.giro_rodilla-=3*velocidad_articulacion;
 						if (robot.pierna_dch.giro_rodilla < robot.pierna_dch.giro_rodilla_min)
 							robot.pierna_dch.giro_rodilla = robot.pierna_dch.giro_rodilla_min;
 					}	
 					else
 					{
-						robot.pierna_izd.giro_rodilla-=3;
+						robot.pierna_izd.giro_rodilla-=3*velocidad_articulacion;
 						if (robot.pierna_izd.giro_rodilla < robot.pierna_izd.giro_rodilla_min)
 							robot.pierna_izd.giro_rodilla = robot.pierna_izd.giro_rodilla_min;
 					}
 					break;
-				case TANQUE: tanque.giro_torreta-=5; break;
+				case TANQUE: tanque.giro_torreta-=5*velocidad_articulacion; break;
 
 			}
 			break;
@@ -351,13 +367,13 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho)
 					{
-						robot.brazo_dch.giro_hombro_x+=4;
+						robot.brazo_dch.giro_hombro_x+=4*velocidad_articulacion;
 						if (robot.brazo_dch.giro_hombro_x > robot.brazo_dch.giro_hombro_max_x)
 							robot.brazo_dch.giro_hombro_x = robot.brazo_dch.giro_hombro_max_x;
 					}
 					else
 					{
-						robot.brazo_izd.giro_hombro_x+=4;
+						robot.brazo_izd.giro_hombro_x+=4*velocidad_articulacion;
 						if (robot.brazo_izd.giro_hombro_x > robot.brazo_izd.giro_hombro_max_x)
 							robot.brazo_izd.giro_hombro_x = robot.brazo_izd.giro_hombro_max_x;
 					}
@@ -371,13 +387,13 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho)
 					{
-						robot.brazo_dch.giro_hombro_x-=4;
+						robot.brazo_dch.giro_hombro_x-=4*velocidad_articulacion;
 						if (robot.brazo_dch.giro_hombro_x < robot.brazo_dch.giro_hombro_min_x)
 							robot.brazo_dch.giro_hombro_x = robot.brazo_dch.giro_hombro_min_x;
 					}
 					else
 					{
-						robot.brazo_izd.giro_hombro_x-=4;
+						robot.brazo_izd.giro_hombro_x-=4*velocidad_articulacion;
 						if (robot.brazo_izd.giro_hombro_x < robot.brazo_izd.giro_hombro_min_x)
 							robot.brazo_izd.giro_hombro_x = robot.brazo_izd.giro_hombro_min_x;
 					}
@@ -391,13 +407,13 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho)
 					{
-						robot.brazo_dch.giro_hombro_z-=4;
+						robot.brazo_dch.giro_hombro_z-=4*velocidad_articulacion;
 						if (robot.brazo_dch.giro_hombro_z < -robot.brazo_dch.giro_hombro_max_z)
 							robot.brazo_dch.giro_hombro_z = -robot.brazo_dch.giro_hombro_max_z;
 					}
 					else
 					{
-						robot.brazo_izd.giro_hombro_z+=4;
+						robot.brazo_izd.giro_hombro_z+=4*velocidad_articulacion;
 						if (robot.brazo_izd.giro_hombro_z > robot.brazo_izd.giro_hombro_max_z)
 							robot.brazo_izd.giro_hombro_z = robot.brazo_izd.giro_hombro_max_z;
 					}
@@ -411,13 +427,13 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho)
 					{
-						robot.brazo_dch.giro_hombro_z+=4;
+						robot.brazo_dch.giro_hombro_z+=4*velocidad_articulacion;
 						if (robot.brazo_dch.giro_hombro_z > -robot.brazo_dch.giro_hombro_min_z)
 							robot.brazo_dch.giro_hombro_z = -robot.brazo_dch.giro_hombro_min_z;	
 					}
 					else
 					{
-						robot.brazo_izd.giro_hombro_z-=4;
+						robot.brazo_izd.giro_hombro_z-=4*velocidad_articulacion;
 						if (robot.brazo_izd.giro_hombro_z < robot.brazo_izd.giro_hombro_min_z)
 							robot.brazo_izd.giro_hombro_z = robot.brazo_izd.giro_hombro_min_z;
 					}
@@ -431,13 +447,13 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho)
 					{
-						robot.brazo_dch.giro_codo+=3;
+						robot.brazo_dch.giro_codo+=3*velocidad_articulacion;
 						if (robot.brazo_dch.giro_codo > robot.brazo_dch.giro_codo_max)
 							robot.brazo_dch.giro_codo = robot.brazo_dch.giro_codo_max;
 					}
 					else
 					{
-						robot.brazo_izd.giro_codo+=3;
+						robot.brazo_izd.giro_codo+=3*velocidad_articulacion;
 						if (robot.brazo_izd.giro_codo > robot.brazo_izd.giro_codo_max)
 							robot.brazo_izd.giro_codo = robot.brazo_izd.giro_codo_max;
 					}
@@ -451,13 +467,13 @@ void special_key(int Tecla1,int x,int y)
 				case ROBOT:
 					if (lado_derecho)
 					{
-						robot.brazo_dch.giro_codo-=3;
+						robot.brazo_dch.giro_codo-=3*velocidad_articulacion;
 						if (robot.brazo_dch.giro_codo < robot.brazo_dch.giro_codo_min)
 							robot.brazo_dch.giro_codo = robot.brazo_dch.giro_codo_min;
 					}
 					else
 					{
-						robot.brazo_izd.giro_codo-=3;
+						robot.brazo_izd.giro_codo-=3*velocidad_articulacion;
 						if (robot.brazo_izd.giro_codo < robot.brazo_izd.giro_codo_min)
 							robot.brazo_izd.giro_codo = robot.brazo_izd.giro_codo_min;
 					}
@@ -469,7 +485,7 @@ void special_key(int Tecla1,int x,int y)
 			switch (t_objeto)
 			{
 				case ROBOT:
-					robot.giro_cuello+=2;
+					robot.giro_cuello+=2*velocidad_articulacion;
 					if(robot.giro_cuello > robot.giro_cuello_max) 
 						robot.giro_cuello = robot.giro_cuello_max;
 					break;
@@ -481,7 +497,7 @@ void special_key(int Tecla1,int x,int y)
 			switch (t_objeto)
 			{
 				case ROBOT:
-					robot.giro_cuello-=2;
+					robot.giro_cuello-=2*velocidad_articulacion;
 					if(robot.giro_cuello < robot.giro_cuello_min) 
 						robot.giro_cuello = robot.giro_cuello_min;
 					break;
@@ -521,6 +537,10 @@ void initialize(void)
 	glViewport(0,0,Window_width,Window_high);
 }
 
+
+//***************************************************************************
+// Funcion de animacion
+//***************************************************************************
 int girando_cuello = 0;
 int girando_pierna_izd = 0;
 int girando_pierna_dch = 1;
@@ -528,7 +548,6 @@ int girando_brazo_izd = 1;
 int girando_brazo_dch = 0;
 int girando_codo_izd = 1;
 int girando_codo_dch = 0;
-
 void movimiento()
 {
 	if (velocidad_animacion != 0) 
@@ -674,13 +693,13 @@ void movimiento()
 	glutPostRedisplay();
 }
 
+
 //***************************************************************************
 // Programa principal
 //
 // Se encarga de iniciar la ventana, asignar las funciones e comenzar el
 // bucle de eventos
 //***************************************************************************
-
 
 int main(int argc, char *argv[])
 {
