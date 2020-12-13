@@ -650,6 +650,25 @@ void movimiento()
 			}
 		}
 
+		if (girando_codo_dch == 0) 
+		{
+			robot.brazo_dch.giro_codo-=velocidad_animacion;
+			if (robot.brazo_dch.giro_codo < robot.brazo_dch.giro_codo_min + 50.0)
+			{
+				robot.brazo_dch.giro_codo = robot.brazo_dch.giro_codo_min + 50.0;
+				girando_codo_dch = 1;
+			}
+		}
+		if (girando_codo_dch == 1) 
+		{
+			robot.brazo_dch.giro_codo+=velocidad_animacion;
+			if (robot.brazo_dch.giro_codo > robot.brazo_dch.giro_codo_max)
+			{
+				robot.brazo_dch.giro_codo = robot.brazo_dch.giro_codo_max;
+				girando_codo_dch = 0;
+			}
+		}
+
 	}	
 
 	glutPostRedisplay();
