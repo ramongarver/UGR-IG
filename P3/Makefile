@@ -2,7 +2,7 @@
 .SUFFIXES: .cpp .o	# Introduces all the suffixes used.
 
 EXE = practica3
-SRC = practica3.cpp objetos.cpp file_ply_stl.cpp
+SRC = practica3.cpp objetos.cpp objetos.h file_ply_stl.cpp file_ply_stl.h vertex.h
 OBJ = $(SRC:.cpp=.o)
 
 # CFLAGS - C/C++ compiler parameters.       
