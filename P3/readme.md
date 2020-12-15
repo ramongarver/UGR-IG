@@ -30,6 +30,7 @@ Debemos estar visualizando el objeto ROBOT (tecla R).
 
 Como existen muchos grados de libertad y ocuparían muchas teclas, he decidido definir una tecla para cambiar el lado del robot que se mueve. Por defecto, se mueve el lado derecho del cuerpo. Si se quiere cambiar de lado de cuerpo es necesario pulsar una tecla:
 - Y -- Cambiar el lado del cuerpo que se mueve
+
 En función del lado del cuerpo que se mueva:
 - F1 -- Mover pierna completa hacia atrás
 - F2 -- Mover pierna completa hacia delante
