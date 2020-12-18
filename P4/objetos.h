@@ -47,6 +47,10 @@ class _triangulos3D: public _puntos3D
 
 		void calcular_normales_caras();
 		void calcular_normales_vertices();
+
+		void cambiar_ambiente_difusa();
+		void cambiar_especular();
+		void cambiar_brillo();
 };
 
 

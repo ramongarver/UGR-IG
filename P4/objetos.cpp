@@ -25,7 +25,14 @@ void _puntos3D::draw_puntos(float r, float g, float b, int grosor)
 //*****************
 // _triangulos3D //
 //*****************
-_triangulos3D::_triangulos3D() {}
+_triangulos3D::_triangulos3D() 
+{
+  b_normales_caras = false;
+  b_normales_vertices = false;
+  ambiente_difusa = _vertex4f(0.2, 0.4, 0.9, 1.0);
+  especular = _vertex4f(0.7, 0.7, 0.7, 1.0);
+  brillo = 40.0;
+}
 
 
 //***************************
@@ -68,7 +75,6 @@ void _triangulos3D::draw_solido(float r, float g, float b)
 //****************************************************
 void _triangulos3D::draw_solido_ajedrez(float r1, float g1, float b1, float r2, float g2, float b2)
 {
-	int i;
 	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 	glBegin(GL_TRIANGLES);
 	for (int i = 0; i < caras.size(); i++) 
@@ -83,6 +89,71 @@ void _triangulos3D::draw_solido_ajedrez(float r1, float g1, float b1, float r2, 
 }
 
 
+//*************************************
+// Dibujar en modo iluminación plana //
+//*************************************
+void _triangulos3D::draw_iluminacion_plana() 
+{
+  if (!b_normales_caras) calcular_normales_caras();
+
+  glShadeModel(GL_FLAT);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_NORMALIZE);
+
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difusa);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, (GLfloat *) &especular);
+  glMaterialf(GL_FRONT, GL_SHININESS, brillo);
+
+	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < caras.size(); i++) 
+	{
+    glNormal3fv((GLfloat *) &normales_caras[i]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._0]); 
+		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+	}
+	glEnd();
+
+  glDisable(GL_LIGHTING);
+}
+
+
+//*************************************
+// Dibujar en modo iluminación suave //
+//*************************************
+void _triangulos3D::draw_iluminacion_suave() 
+{
+  if (!b_normales_caras) calcular_normales_caras();
+  if (!b_normales_vertices) calcular_normales_vertices();
+
+  glShadeModel(GL_SMOOTH);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_NORMALIZE);
+
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difusa);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, (GLfloat *) &especular);
+  glMaterialf(GL_FRONT, GL_SHININESS, brillo);
+
+	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	glBegin(GL_TRIANGLES);
+	for (int i = 0; i < caras.size(); i++) 
+	{
+    glNormal3fv((GLfloat *) &normales_vertices[caras[i]._0]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+
+    glNormal3fv((GLfloat *) &normales_vertices[caras[i]._1]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+
+    glNormal3fv((GLfloat *) &normales_vertices[caras[i]._2]);
+		glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+	}
+	glEnd();
+
+  glDisable(GL_LIGHTING);
+}
+
+
 //*******************************
 // Dibujar con distintos modos //
 //*******************************
@@ -94,8 +165,59 @@ void _triangulos3D::draw(_modo modo, float r1, float g1, float b1, float r2, flo
 	  case EDGES:       draw_aristas(r1, g1, b1, grosor);               break;
 	  case SOLID:       draw_solido(r1, g1, b1);                        break;
 	  case SOLID_CHESS: draw_solido_ajedrez(r1, g1, b1, r2, g2, b2);    break;
+    case SOLID_ILLUMINATED_FLAT: draw_iluminacion_plana();            break;
+    case SOLID_ILLUMINATED_GOURAUD: draw_iluminacion_suave();         break;
 	}
 }
+
+
+//*********************************
+// Calcular normales a las caras //
+//*********************************
+void _triangulos3D::calcular_normales_caras() 
+{
+  normales_caras.resize(caras.size());
+
+  for (unsigned long i = 0; i < caras.size(); i++) 
+  {
+    // Obtener dos vectores en el triángulo y calcular el producto vectorial.
+    _vertex3f a1 = vertices[caras[i]._1] - vertices[caras[i]._0],
+              a2 = vertices[caras[i]._2] - vertices[caras[i]._0],
+              n = a1.cross_product(a2);
+    // Módulo
+    float m = sqrt(n.x*n.x + n.y*n.y + n.z*n.z);
+    // Normalización
+    normales_caras[i] = _vertex3f(n.x/m, n.y/m, n.z/m);
+  }
+
+  b_normales_caras = true;
+}
+
+
+//*********************************
+// Calcular normales a los vértices //
+//*********************************
+void _triangulos3D::calcular_normales_vertices() 
+{
+  normales_vertices.resize(vertices.size());
+
+  for (unsigned long i = 0; i < vertices.size(); i++) 
+  {
+    normales_vertices[i].x = 0.0;
+    normales_vertices[i].y = 0.0;
+    normales_vertices[i].z = 0.0;
+  }
+
+  for (unsigned long i = 0; i < caras.size(); i++) 
+  {
+    normales_vertices[caras[i]._0] += normales_caras[i];
+    normales_vertices[caras[i]._1] += normales_caras[i];
+    normales_vertices[caras[i]._2] += normales_caras[i];
+  }
+
+  b_normales_vertices = true;
+}
+
 
 //*********
 // _cubo //

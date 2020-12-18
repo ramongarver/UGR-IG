@@ -4,6 +4,8 @@
 - 2 -- Líneas
 - 3 -- Sólido
 - 4 -- Sólido Ajedrez
+- 5 -- 
+- 6 --
 
 ## Objetos visualizables:
 - Z -- ROTACION

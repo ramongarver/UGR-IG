@@ -10,7 +10,7 @@ using namespace std;
 // Tipos de objetos
 typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ROTACION_PLY, CONO, CILINDRO, ESFERA, TANQUE, ROBOT} _tipo_objeto;
 _tipo_objeto t_objeto = ROBOT;	// Tipo de objeto por defecto.
-_modo   	 	 modo = SOLID; // Tipo de modo por defecto.
+_modo   	 	 modo = SOLID_ILLUMINATED_GOURAUD; // Tipo de modo por defecto.
 
 // Variables que definen la posición de la cámara en coordenadas polares
 GLfloat Observer_distance,
@@ -41,6 +41,8 @@ _esfera esfera;
 _tanque tanque;
 _robot robot;
 
+// Rotación de la posición de la iluminación
+float alfa = 0;
 
 //**************************************************************************
 //
@@ -53,7 +55,7 @@ void clean_window()
 
 
 //**************************************************************************
-// Funcion para definir la transformación de proyeccion
+// Función para definir la transformación de proyeccion
 //***************************************************************************
 
 void change_projection()
@@ -66,7 +68,7 @@ void change_projection()
 }
 
 //**************************************************************************
-// Funcion para definir la transformación*ply1 de vista (posicionar la camara)
+// Función para definir la transformación*ply1 de vista (posicionar la camara)
 //***************************************************************************
 
 void change_observer()
@@ -80,7 +82,29 @@ void change_observer()
 }
 
 //**************************************************************************
-// Funcion que dibuja los ejes utilizando la primitiva grafica de lineas
+// Función para definir las luces de la escena
+//***************************************************************************
+void luces(float alfa)
+{
+	float 	luz_ambiente[] = {0.3, 0.3, 0.3, 1.0},
+			luz[] = {1.0, 1.0, 1.0, 1.0},
+			pos[] = {0.0, 0.0, 50.0, 1.0};
+
+	glLightfv (GL_LIGHT0, GL_AMBIENT, luz_ambiente);
+	glLightfv (GL_LIGHT1, GL_DIFFUSE, luz);
+	glLightfv (GL_LIGHT1, GL_SPECULAR, luz);
+	
+	
+	glPushMatrix();
+		glRotatef(alfa, 0.0, 1.0, 0.0);
+		glLightfv (GL_LIGHT1, GL_POSITION, pos);
+	glPopMatrix();
+
+	glEnable(GL_LIGHT1);
+}
+
+//**************************************************************************
+// Función que dibuja los ejes utilizando la primitiva grafica de lineas
 //***************************************************************************
 
 void draw_axis()
@@ -105,7 +129,7 @@ void draw_axis()
 
 
 //**************************************************************************
-// Funcion que dibuja los objetos
+// Función que dibuja los objetos
 //****************************2***********************************************
 
 void draw_objects()
@@ -130,10 +154,11 @@ void draw_objects()
 //
 //***************************************************************************
 
-void draw(void)
+void draw()
 {
 	clean_window();
 	change_observer();
+	luces(alfa);
 	draw_axis();
 	draw_objects();
 	glutSwapBuffers();
@@ -142,9 +167,9 @@ void draw(void)
 
 
 //***************************************************************************
-// Funcion llamada cuando se produce un cambio en el tamaño de la ventana
+// Función llamada cuando se produce un cambio en el tamaño de la ventana
 //
-// el evento manda a la funcion:
+// el evento manda a la función:
 // nuevo ancho
 // nuevo alto
 //***************************************************************************
@@ -161,9 +186,9 @@ void change_window_size(int Ancho1,int Alto1)
 
 
 //**********-o*****************************************************************
-// Funcion llamada cuando se aprieta una tecla normal
+// Función llamada cuando se aprieta una tecla normal
 //
-// el evento manda a la funcion:
+// el evento manda a la función:
 // codigo de la tecla
 // posicion x del raton
 // posicion y del raton
@@ -179,10 +204,14 @@ void normal_key(unsigned char Tecla1,int x,int y)
 	{
 		case 'Q':exit(0);
 
-		case '1': modo = POINTS;				break;
-		case '2': modo = EDGES;					break;
-		case '3': modo = SOLID;					break;
-		case '4': modo = SOLID_CHESS;			break;
+		case '1': modo = POINTS;					break;
+		case '2': modo = EDGES;						break;
+		case '3': modo = SOLID;						break;
+		case '4': modo = SOLID_CHESS;				break;
+		case '5': modo = SOLID_ILLUMINATED_FLAT; 	break;
+		case '6': modo = SOLID_ILLUMINATED_GOURAUD; break;
+
+		case 'G': alfa += 5.0; 						break;
 
 		case 'Z': t_objeto = ROTACION;			break;
 		case 'X': t_objeto = PIRAMIDE;			break;
@@ -193,7 +222,6 @@ void normal_key(unsigned char Tecla1,int x,int y)
 		case 'M': t_objeto = ROTACION;			break;
 		case ',': t_objeto = OBJETO_PLY;		break;
 		case '.': t_objeto = ROTACION_PLY;		break;
-
 
 		case 'R': t_objeto = ROBOT;				break;
 		case 'T': t_objeto = TANQUE;			break;
@@ -249,9 +277,9 @@ void normal_key(unsigned char Tecla1,int x,int y)
 }
 
 //***************************************************************************
-// Funcion l-olamada cuando se aprieta una tecla especial
+// Función l-olamada cuando se aprieta una tecla especial
 //
-// el evento manda a la funcion:
+// el evento manda a la función:
 // codigo de la tecla
 // posicion x del raton
 // posicion y del raton
@@ -512,7 +540,7 @@ void special_key(int Tecla1,int x,int y)
 
 
 //***************************************************************************
-// Funcion de incializacion
+// Función de incialización
 //***************************************************************************
 
 void initialize(void)
@@ -540,7 +568,7 @@ void initialize(void)
 
 
 //***************************************************************************
-// Funcion de animacion
+// Función de animación
 //***************************************************************************
 int girando_cuello = 0;
 int girando_pierna_izd = 0;
@@ -740,20 +768,20 @@ int main(int argc, char *argv[])
 
 	// llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 	// al bucle de eventos)
-	glutCreateWindow("P3 IG");
+	glutCreateWindow("P4 IG");
 
-	// asignación de la funcion llamada "dibujar" al evento de dibujo
+	// asignación de la función llamada "dibujar" al evento de dibujo
 	glutDisplayFunc(draw);
-	// asignación de la funcion llamada "change_window_size" al evento correspondiente
+	// asignación de la función llamada "change_window_size" al evento correspondiente
 	glutReshapeFunc(change_window_size);
-	// asignación de la funcion llamada "normal_key" al evento correspondiente
+	// asignación de la función llamada "normal_key" al evento correspondiente
 	glutKeyboardFunc(normal_key);
-	// asignación de la funcion llamada "tecla_Especial" al evento correspondiente
+	// asignación de la función llamada "tecla_Especial" al evento correspondiente
 	glutSpecialFunc(special_key);
 	// asignación de la función llamada "movimiento" al evento correspondiente
 	glutIdleFunc(movimiento);
 
-	// funcion de inicialización
+	// función de inicialización
 	initialize();
 
 	// creación del objeto ply
