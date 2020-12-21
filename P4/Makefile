@@ -15,10 +15,10 @@ LDFLAGS = -L/usr/lib/nvidia-331
 LIBS = -lglut -lGLU -lGL -lsupc++ -lm -lc -lstdc++ -lpthread
 
 # CC - UNIX command to call C/C++ GNU compilator.
-CC= g++
+CC = g++
 
 # Executable.
-$(EXE): $(OBJ)	
+$(EXE): $(OBJ)
 	$(CC) -o $(EXE) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LIBS)
 
 # Clean OBJ and EXECUTABLE.

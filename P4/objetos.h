@@ -41,16 +41,16 @@ class _triangulos3D: public _puntos3D
 		void draw_aristas(float r, float g, float b, int grosor);
 		void draw_solido(float r, float g, float b);
 		void draw_solido_ajedrez(float r1, float g1, float b1, float r2, float g2, float b2);
-		void draw_iluminacion_plana( );
-		void draw_iluminacion_suave( );
+		void draw_iluminacion_plana();
+		void draw_iluminacion_suave();
 		void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
 
 		void calcular_normales_caras();
 		void calcular_normales_vertices();
 
-		void cambiar_ambiente_difusa();
-		void cambiar_especular();
-		void cambiar_brillo();
+		void cambiar_ambiente_difusa(_vertex4f ambiente_difusa);
+		void cambiar_especular(_vertex4f especular);
+		void cambiar_brillo(float brillo);
 };
 
 

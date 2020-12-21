@@ -212,6 +212,17 @@ void normal_key(unsigned char Tecla1,int x,int y)
 		case '6': modo = SOLID_ILLUMINATED_GOURAUD; break;
 
 		case 'G': alfa += 5.0; 						break;
+		case 'H': 
+			ply.cambiar_ambiente_difusa(_vertex4f(0.6, 0.4, 0.7, 1.0));
+			ply.cambiar_especular(_vertex4f(0.4, 0.5, 0.9, 1.0));
+			ply.cambiar_brillo(30.0);
+			break;
+		case 'J': 
+			ply.cambiar_ambiente_difusa(_vertex4f(0.2, 0.4, 0.9, 1.0));
+			ply.cambiar_especular (_vertex4f(0.7, 0.7, 0.7, 1.0));
+			ply.cambiar_brillo(40.0);
+			break;
+
 
 		case 'Z': t_objeto = ROTACION;			break;
 		case 'X': t_objeto = PIRAMIDE;			break;

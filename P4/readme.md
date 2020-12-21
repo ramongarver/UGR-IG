@@ -4,8 +4,10 @@
 - 2 -- Líneas
 - 3 -- Sólido
 - 4 -- Sólido Ajedrez
-- 5 -- 
-- 6 --
+- 5 -- Sólido iluminación plana
+- 6 -- Sólido iluminación suave
+
+- G -- Girar luces
 
 ## Objetos visualizables:
 - Z -- ROTACION

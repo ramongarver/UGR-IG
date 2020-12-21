@@ -194,9 +194,9 @@ void _triangulos3D::calcular_normales_caras()
 }
 
 
-//*********************************
+//************************************
 // Calcular normales a los vértices //
-//*********************************
+//************************************
 void _triangulos3D::calcular_normales_vertices() 
 {
   normales_vertices.resize(vertices.size());
@@ -216,6 +216,33 @@ void _triangulos3D::calcular_normales_vertices()
   }
 
   b_normales_vertices = true;
+}
+
+
+//************************************
+// Cambiar valor de ambiente difusa //
+//************************************
+void _triangulos3D::cambiar_ambiente_difusa(_vertex4f ambiente_difusa) 
+{
+  this->ambiente_difusa = ambiente_difusa;
+}
+
+
+//************************************
+// Cambiar valor de ambiente difusa //
+//************************************
+void _triangulos3D::cambiar_especular(_vertex4f especular) 
+{
+  this->especular = especular;
+}
+
+
+//************************************
+// Cambiar valor de ambiente difusa //
+//************************************
+void _triangulos3D::cambiar_brillo(float brillo) 
+{
+  this->brillo = brillo;
 }
 
 
