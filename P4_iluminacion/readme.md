@@ -8,6 +8,8 @@
 - 6 -- Sólido iluminación suave
 
 - G -- Girar luces
+- H -- Tonalidad lila/morado
+- J -- Tonalidad azul
 
 ## Objetos visualizables:
 - Z -- ROTACION
